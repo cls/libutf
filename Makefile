@@ -1,12 +1,9 @@
 # See LICENSE file for copyright and license details.
 
+include config.mk
+
 SRC = utf.c utftest.c
 OBJ = $(SRC:.c=.o)
-
-CC = cc
-
-CFLAGS  = -ansi -pedantic -std=c89 -Wall -Wextra
-LDFLAGS = -Os -s
 
 all: utftest
 
