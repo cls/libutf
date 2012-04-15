@@ -12,7 +12,7 @@ main(int argc, char *argv[])
 	char buf[BUFSIZ], buf2[UTFmax], *p;
 	int len, len2;
 	size_t i, n;
-	rune_t r;
+	Rune r;
 
 	switch(argc) {
 	case 1:
@@ -93,6 +93,6 @@ utferror(const char *s, int n)
 
 	fprintf(stderr, "error converting char to rune:");
 	for(i = 0; i < n; i++)
-		fprintf(stderr, " %02X", (uint8_t)s[i]);
+		fprintf(stderr, " %02X", (unsigned char)s[i]);
 	fputc('\n', stderr);
 }

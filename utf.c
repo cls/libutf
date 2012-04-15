@@ -21,9 +21,9 @@
  * If the rune is illegal, runetochar will return 0.
  */
 int
-runetochar(char *s, rune_t *p)
+runetochar(char *s, Rune *p)
 {
-	rune_t r = *p;
+	Rune r = *p;
 
 	switch(runelen(r)) {
 	case 1: /* 0aaaaaaa */
@@ -56,7 +56,7 @@ runetochar(char *s, rune_t *p)
  * number of bytes in the invalid sequence.
  */
 int
-chartorune(rune_t *p, const char *s)
+chartorune(Rune *p, const char *s)
 {
 	return charntorune(p, s, UTFmax);
 }
@@ -71,10 +71,10 @@ chartorune(rune_t *p, const char *s)
  * return 0.
  */
 int
-charntorune(rune_t *p, const char *s, size_t len)
+charntorune(Rune *p, const char *s, size_t len)
 {
 	unsigned int i, n;
-	rune_t r;
+	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */
 		return 0;
@@ -117,7 +117,7 @@ charntorune(rune_t *p, const char *s, size_t len)
  * rune is illegal, runelen will return 0.
  */
 int
-runelen(rune_t r)
+runelen(Rune r)
 {
 	if(r <= 0x7F)
 		return 1;
@@ -136,7 +136,7 @@ runelen(rune_t r)
  * length len pointed to by p into UTF-8.
  */
 size_t
-runenlen(rune_t *p, size_t len)
+runenlen(Rune *p, size_t len)
 {
 	size_t i, n = 0;
 
@@ -146,13 +146,13 @@ runenlen(rune_t *p, size_t len)
 }
 
 /*
- * fullrune returns true if the string s of length len is long enough to be
- * decoded by chartorune, and false otherwise.
+ * fullrune returns 1 if the string s of length len is long enough to be
+ * decoded by chartorune, and 0 otherwise.
  */
-bool
+int
 fullrune(const char *s, size_t len)
 {
-	rune_t r;
+	Rune r;
 
 	return charntorune(&r, s, len) > 0;
 }
@@ -166,7 +166,7 @@ fullrune(const char *s, size_t len)
 char *
 utfecpy(char *to, char *end, const char *from)
 {
-	rune_t r = Runeerror;
+	Rune r = Runeerror;
 	size_t i, n;
 
 	/* seek through to find final full rune */
@@ -188,7 +188,7 @@ utflen(const char *s)
 {
 	const char *p = s;
 	size_t i;
-	rune_t r;
+	Rune r;
 
 	for(i = 0; *p != '\0'; i++)
 		p += chartorune(&r, p);
@@ -206,7 +206,7 @@ utfnlen(const char *s, size_t len)
 {
 	const char *p = s;
 	size_t i;
-	rune_t r;
+	Rune r;
 	int n;
 
 	for(i = 0; (n = charntorune(&r, p, len-(p-s))) && r != '\0'; i++)
@@ -220,13 +220,13 @@ utfnlen(const char *s, size_t len)
  * considered to be part of the string s.
  */
 char *
-utfrune(const char *s, rune_t r)
+utfrune(const char *s, Rune r)
 {
 	if(r <= 0x7F) {
 		return strchr(s, r);
 	}
 	else if(r == Runeerror) {
-		rune_t r0;
+		Rune r0;
 		int n;
 
 		for(; *s != '\0'; s += n) {
@@ -253,10 +253,10 @@ utfrune(const char *s, rune_t r)
  * considered to be part of the string s.
  */
 char *
-utfrrune(const char *s, rune_t r)
+utfrrune(const char *s, Rune r)
 {
 	const char *p = NULL;
-	rune_t r0;
+	Rune r0;
 	int n;
 
 	if(r <= 0x7F)
@@ -279,7 +279,7 @@ char *
 utfutf(const char *s, const char *t)
 {
 	const char *p, *q;
-	rune_t r0, r1, r2;
+	Rune r0, r1, r2;
 	int n, m;
 
 	for(chartorune(&r0, t); (s = utfrune(s, r0)); s++) {
