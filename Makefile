@@ -3,16 +3,18 @@
 SRC = utf.c utftest.c
 OBJ = $(SRC:.c=.o)
 
-CFLAGS  = -ansi -pedantic -Wall -Wextra -D_ANSI_SOURCE
+CC = cc
+
+CFLAGS  = -ansi -pedantic -std=c89 -Wall -Wextra
 LDFLAGS = -Os -s
 
 all: utftest
 
 utftest: $(OBJ)
-	cc $(LDFLAGS) -o $@ $(OBJ)
+	$(CC) $(LDFLAGS) -o $@ $(OBJ)
 
 .c.o:
-	cc $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $<
 
 clean:
 	rm -f utftest $(OBJ)
