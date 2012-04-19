@@ -125,7 +125,7 @@ runelen(Rune r)
 		return 2;
 	else if(r <= 0xFFFF)
 		return 3;
-	else if(r <= 0x10FFFF)
+	else if(r <= Runemax)
 		return 4;
 	else
 		return 0; /* error */
@@ -222,7 +222,7 @@ utfnlen(const char *s, size_t len)
 char *
 utfrune(const char *s, Rune r)
 {
-	if(r <= 0x7F) {
+	if(r < Runeself) {
 		return strchr(s, r);
 	}
 	else if(r == Runeerror) {
@@ -259,7 +259,7 @@ utfrrune(const char *s, Rune r)
 	Rune r0;
 	int n;
 
-	if(r <= 0x7F)
+	if(r < Runeself)
 		return strrchr(s, r);
 
 	for(; *s != '\0'; s += n) {

@@ -7,8 +7,10 @@
 typedef unsigned int Rune;
 
 enum {
-	UTFmax    = 6,
-	Runeerror = 0xFFFD
+	UTFmax    = 6,       /* maximum bytes per rune */
+	Runeself  = 0x80,    /* rune and utf are equal (<) */
+	Runeerror = 0xFFFD,  /* decoding error in utf */
+	Runemax   = 0x10FFFF /* maximum rune value */
 };
 
 int runetochar(char *, Rune *);
