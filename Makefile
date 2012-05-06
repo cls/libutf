@@ -2,16 +2,30 @@
 
 include config.mk
 
-SRC = utf.c utftest.c
+SRC = rune.c runetype.c
 OBJ = $(SRC:.c=.o)
 
-all: utftest
+UCD = UnicodeData-6.1.0.txt
 
-utftest: $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $(OBJ)
+all: libutf.a utftest
+
+libutf.a: $(OBJ)
+	rm -f $@
+	$(AR) rc $@ $(OBJ)
+
+utftest: utftest.o libutf.a
+	$(CC) $(LDFLAGS) -o $@ utftest.o
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
+runetypebody.h: mkrunetype.awk $(UCD)
+	$(AWK) -f mkrunetype.awk $(UCD) > $@
+
+runetype.o: runetype.c runetypebody.h
+
 clean:
-	rm -f utftest $(OBJ)
+	rm -f libutf.a utftest utftest.o $(OBJ)
+
+purge: $(UCD) clean
+	rm -f runetypebody.h
