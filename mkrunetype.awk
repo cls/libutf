@@ -2,7 +2,7 @@
 
 BEGIN {
 	FS = ";"
-	# setup hexadecimal lookup table
+	# set up hexadecimal lookup table
 	for(i = 0; i < 16; i++)
 		hex[sprintf("%X",i)] = i;
 }
@@ -25,6 +25,7 @@ END {
 	mkis("digit", digitv, digitc);
 }
 
+# parse hexadecimal rune index to int
 function code(s) {
 	x = 0;
 	for(i = 1; i <= length(s); i++) {
@@ -34,10 +35,12 @@ function code(s) {
 	return x;
 }
 
+# generate 'is<name>rune' unicode lookup function
 function mkis(name, runev, runec) {
 	rune1c = 0;
 	rune2c = 0;
 
+	# sort rune groups into singletons and ranges
 	for(j = k = 0; j < runec; j++) {
 		if(j+1 == runec || code(runev[j+1]) != code(runev[j])+1) {
 			if(j == k) {
@@ -52,6 +55,7 @@ function mkis(name, runev, runec) {
 			k = j+1;
 		}
 	}
+	# generate list of ranges
 	if(rune2c > 0) {
 		print "static Rune "name"2[][2] = {";
 		for(j = 0; j < rune2c; j++) {
@@ -59,6 +63,7 @@ function mkis(name, runev, runec) {
 		}
 		print "};\n";
 	}
+	# generate list of singletons
 	if(rune1c > 0) {
 		print "static Rune "name"1[] = {";
 		for(j = 0; j < rune1c; j++) {
@@ -66,6 +71,7 @@ function mkis(name, runev, runec) {
 		}
 		print "};\n";
 	}
+	# generate lookup function
 	print "int\nis"name"rune(Rune r)\n{";
 	if(rune2c > 0)
 		print "\tif(bsearch(&r, "name"2, nelem("name"2), sizeof *"name"2, &rune2cmp))\n\t\treturn 1;";

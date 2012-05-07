@@ -5,23 +5,25 @@
 #include <string.h>
 #include "utf.h"
 
-#define ARGBEGIN                                                                                \
-	{                                                                                           \
-		Rune _argr;                                                                             \
-                                                                                                \
-		if(!argv0)                                                                              \
-			argv0 = argv[0];                                                                    \
+#define ARGBEGIN \
+	{ \
+		Rune _argr; \
+		\
+		if(!argv0) \
+			argv0 = argv[0]; \
 		for(argc--, argv++; *argv && (*argv)[0] == '-' && (*argv)[1] != '\0'; argc--, argv++) { \
-			if((*argv)[1] == '-' && (*argv)[2] == '\0') { /* -- signifies end of flags */       \
-				argc--; argv++;                                                                 \
-				break;                                                                          \
-			}                                                                                   \
-			(*argv)++;                                                                          \
-			while(**argv != '\0' && (*argv += chartorune(&_argr, *argv)))                       \
+			if((*argv)[1] == '-' && (*argv)[2] == '\0') { /* -- signifies end of flags */ \
+				argc--; argv++; \
+				break; \
+			} \
+			(*argv)++; \
+			while(**argv != '\0' && (*argv += chartorune(&_argr, *argv))) \
 				switch(_argr)
-#define ARGEND                                                                                  \
-		}                                                                                       \
+
+#define ARGEND \
+		} \
 	}
+
 #define ARGC()  _argr
 
 static void eprintf(const char *, ...);
@@ -107,6 +109,6 @@ eprintf(const char *fmt, ...)
 void
 usage(void)
 {
-	fprintf(stderr, "usage: %s [-adlstu]\n", argv0);
+	fprintf(stderr, "usage: %s [-adlstuv]\n", argv0);
 	exit(EXIT_FAILURE);
 }
