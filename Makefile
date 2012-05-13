@@ -14,7 +14,7 @@ libutf.a: $(OBJ)
 	$(AR) rc $@ $(OBJ)
 
 utftest: utftest.o libutf.a
-	$(CC) $(LDFLAGS) -o $@ utftest.o
+	$(CC) $(LDFLAGS) -o $@ utftest.o libutf.a
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<
