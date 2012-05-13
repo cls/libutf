@@ -22,10 +22,5 @@ utftest: utftest.o libutf.a
 runetypebody.h: mkrunetype.awk $(UCD)
 	$(AWK) -f mkrunetype.awk $(UCD) > $@
 
-runetype.o: runetype.c runetypebody.h
-
 clean:
 	rm -f libutf.a utftest utftest.o $(OBJ)
-
-purge: $(UCD) clean
-	rm -f runetypebody.h
