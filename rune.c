@@ -18,13 +18,6 @@
                 || ((x) >= 0xD800 && (x) <= 0xDFFF) \
                 || ((x) >= 0xFDD0 && (x) <= 0xFDEF))
 
-/*
- * runetochar copies one rune at p to at most UTFmax bytes starting at s and
- * returns the number of bytes copied. UTFmax is the maximum number of bytes
- * required to represent a legal rune.
- *
- * If the rune is illegal, runetochar will return 0.
- */
 int
 runetochar(char *s, const Rune *p)
 {
@@ -54,27 +47,12 @@ runetochar(char *s, const Rune *p)
 	}
 }
 
-/*
- * chartorune copies at most UTFmax bytes starting at s to one rune at p and
- * returns the number of bytes copied. If the input is not valid UTF-8,
- * chartorune will convert the sequence to Runeerror (0xFFFD), returning the
- * number of bytes in the invalid sequence.
- */
 int
 chartorune(Rune *p, const char *s)
 {
 	return charntorune(p, s, UTFmax);
 }
 
-/* 
- * charntorune copies at most len bytes starting at s to one rune at p and
- * returns the number of bytes copied. If the input is not valid UTF-8,
- * charntorune will convert the sequence to Runeerror (0xFFFD), returning the
- * number of bytes in the invalid sequence.
- *
- * If a potentially valid sequence is cut off by the len limit, charntorune will
- * return 0.
- */
 int
 charntorune(Rune *p, const char *s, size_t len)
 {
@@ -116,29 +94,21 @@ charntorune(Rune *p, const char *s, size_t len)
 	return n;
 }
 
-/*
- * runelen returns the number of bytes required to convert r into UTF-8. If the
- * rune is illegal, runelen will return 0.
- */
 int
 runelen(Rune r)
 {
-	if(BADRUNE(r))
-		return 0; /* error */
-	else if(r <= 0x7F)
+	if(r <= 0x7F)
 		return 1;
 	else if(r <= 0x07FF)
 		return 2;
+	else if(BADRUNE(r))
+		return 0; /* error */
 	else if(r <= 0xFFFF)
 		return 3;
 	else
 		return 4;
 }
 
-/*
- * runelen returns the number of bytes required to convert the rune-string of
- * length len pointed to by p into UTF-8.
- */
 size_t
 runenlen(const Rune *p, size_t len)
 {
@@ -149,10 +119,6 @@ runenlen(const Rune *p, size_t len)
 	return n;
 }
 
-/*
- * fullrune returns 1 if the string s of length len is long enough to be
- * decoded by chartorune, and 0 otherwise.
- */
 int
 fullrune(const char *s, size_t len)
 {
@@ -161,12 +127,6 @@ fullrune(const char *s, size_t len)
 	return charntorune(&r, s, len) > 0;
 }
 
-/*
- * utfecpy copies UTF-8 sequences until a null sequence has been copied, but
- * writes no sequences beyond end. If any sequences are copied, the to string is
- * terminated by a null sequence, and a pointer to that sequence is returned.
- * Otherwise, the original to string is returned.
- */
 char *
 utfecpy(char *to, char *end, const char *from)
 {
@@ -183,10 +143,6 @@ utfecpy(char *to, char *end, const char *from)
 	return &to[i];
 }
 
-/*
- * utflen returns the number of runes that are represented by the UTF-8 string
- * s.
- */
 size_t
 utflen(const char *s)
 {
@@ -199,12 +155,6 @@ utflen(const char *s)
 	return i;
 }
 
-/*
- * utfnlen returns the number of runes that are represented by the UTF-8 string
- * s of length len. If the last few bytes contain an incompletely coded rune,
- * utfnlen will not count them; in this way it differs from utflen, which
- * includes every byte of the string.
- */
 size_t
 utfnlen(const char *s, size_t len)
 {
@@ -218,11 +168,6 @@ utfnlen(const char *s, size_t len)
 	return i;
 }
 
-/*
- * utfrune returns a pointer to the first ocurrence of r in the UTF-8 string s,
- * or NULL if r does not occur in s. The null byte terminating a string is
- * considered to be part of the string s.
- */
 char *
 utfrune(const char *s, Rune r)
 {
@@ -251,11 +196,6 @@ utfrune(const char *s, Rune r)
 	return NULL;
 }
 
-/*
- * utfrrune returns a pointer to the last ocurrence of r in the UTF-8 string s,
- * or NULL if r does not occur in s. The null byte terminating a string is
- * considered to be part of the string s.
- */
 char *
 utfrrune(const char *s, Rune r)
 {
@@ -274,11 +214,6 @@ utfrrune(const char *s, Rune r)
 	return (char *)p;
 }
 
-/*
- * utfutf returns a pointer to the first occurrence of the UTF-8 string t as a
- * UTF-8 substring of s, or NULL if there is none. If t is the null string,
- * utfutf returns s.
- */
 char *
 utfutf(const char *s, const char *t)
 {
