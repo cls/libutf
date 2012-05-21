@@ -4,14 +4,19 @@
 
 #define MIN(x,y)  ((x) < (y) ? (x) : (y))
 
-#define UTFSEQ(x)  ((((x) & 0x80) == 0x00) ? 1 /* 0xxxxxxx */ \
-                  : (((x) & 0xC0) == 0x80) ? 0 /* 10xxxxxx */ \
-                  : (((x) & 0xE0) == 0xC0) ? 2 /* 110xxxxx */ \
-                  : (((x) & 0xF0) == 0xE0) ? 3 /* 1110xxxx */ \
-                  : (((x) & 0xF8) == 0xF0) ? 4 /* 11110xxx */ \
-                  : (((x) & 0xFC) == 0xF8) ? 5 /* 111110xx */ \
-                  : (((x) & 0xFE) == 0xFC) ? 6 /* 1111110x */ \
-                                           : 0 )
+#define UTFSEQ(x) ((((x) & 0x80) == 0x00) ? 1 /* 0xxxxxxx */ \
+                 : (((x) & 0xC0) == 0x80) ? 0 /* 10xxxxxx */ \
+                 : (((x) & 0xE0) == 0xC0) ? 2 /* 110xxxxx */ \
+                 : (((x) & 0xF0) == 0xE0) ? 3 /* 1110xxxx */ \
+                 : (((x) & 0xF8) == 0xF0) ? 4 /* 11110xxx */ \
+                 : (((x) & 0xFC) == 0xF8) ? 5 /* 111110xx */ \
+                 : (((x) & 0xFE) == 0xFC) ? 6 /* 1111110x */ \
+                                          : 0 )
+
+#define BADRUNE(x) ((x) > Runemax \
+                || ((x) & 0xFFFE) == 0xFFFE \
+                || ((x) >= 0xD800 && (x) <= 0xDFFF) \
+                || ((x) >= 0xFDD0 && (x) <= 0xFDEF))
 
 /*
  * runetochar copies one rune at p to at most UTFmax bytes starting at s and
@@ -21,7 +26,7 @@
  * If the rune is illegal, runetochar will return 0.
  */
 int
-runetochar(char *s, Rune *p)
+runetochar(char *s, const Rune *p)
 {
 	Rune r = *p;
 
@@ -104,8 +109,7 @@ charntorune(Rune *p, const char *s, size_t len)
 		return 0;
 
 	/* reject invalid runes and overlong sequences */
-	if(n > UTFmax || r > 0x10FFFF || runelen(r) < (int)n || (r & 0xFFFE) == 0xFFFE
-	|| (r >= 0xD800 && r <= 0xDFFF) || (r >= 0xFDD0 && r <= 0xFDEF))
+	if(n > UTFmax || runelen(r) < (int)n || BADRUNE(r))
 		r = Runeerror;
 
 	*p = r;
@@ -119,16 +123,16 @@ charntorune(Rune *p, const char *s, size_t len)
 int
 runelen(Rune r)
 {
-	if(r <= 0x7F)
+	if(BADRUNE(r))
+		return 0; /* error */
+	else if(r <= 0x7F)
 		return 1;
 	else if(r <= 0x07FF)
 		return 2;
 	else if(r <= 0xFFFF)
 		return 3;
-	else if(r <= Runemax)
-		return 4;
 	else
-		return 0; /* error */
+		return 4;
 }
 
 /*
@@ -136,7 +140,7 @@ runelen(Rune r)
  * length len pointed to by p into UTF-8.
  */
 size_t
-runenlen(Rune *p, size_t len)
+runenlen(const Rune *p, size_t len)
 {
 	size_t i, n = 0;
 

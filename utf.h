@@ -13,10 +13,11 @@ enum {
 	Runemax   = 0x10FFFF /* maximum rune value */
 };
 
-int runetochar(char *, Rune *);
+int runetochar(char *, const Rune *);
 int chartorune(Rune *, const char *);
 int charntorune(Rune *, const char *, size_t);
-int runelen(Rune);
+int runelen(const Rune);
+size_t runenlen(const Rune *, size_t);
 int fullrune(const char *, size_t);
 char *utfecpy(char *, char *, const char *);
 size_t utflen(const char *);
