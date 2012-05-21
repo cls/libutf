@@ -26,7 +26,7 @@ install: libutf.a
 	cp libutf.a $(DESTDIR)$(PREFIX)/lib
 
 uninstall:
-	rm -f $(PREFIX)/lib/libutf.a
+	rm -f $(DESTDIR)$(PREFIX)/lib/libutf.a
 
 clean:
 	rm -f libutf.a utftest utftest.o $(OBJ)
