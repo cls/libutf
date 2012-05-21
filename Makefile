@@ -15,7 +15,7 @@ all: $(LIB) utftest
 $(LIB): $(OBJ)
 	$(AR) -rcs $@ $(OBJ)
 
-utftest: utftest.o libutf.a
+utftest: utftest.o $(LIB)
 	$(CC) $(LDFLAGS) -o $@ utftest.o $(LIB)
 
 .c.o:
@@ -24,7 +24,7 @@ utftest: utftest.o libutf.a
 runetypebody.h: mkrunetype.awk $(UCD)
 	$(AWK) -f mkrunetype.awk $(UCD) > $@
 
-install: libutf.a
+install: $(LIB)
 	mkdir -p $(DESTDIR)$(PREFIX)/lib
 	cp $(LIB) $(DESTDIR)$(PREFIX)/lib/$(LIB)
 	mkdir -p $(DESTDIR)$(PREFIX)/include
@@ -35,4 +35,4 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/include/$(INC)
 
 clean:
-	rm -f libutf.a utftest utftest.o $(OBJ)
+	rm -f $(LIB) utftest utftest.o $(OBJ)
