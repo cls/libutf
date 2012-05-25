@@ -81,13 +81,13 @@ charntorune(Rune *p, const char *s, size_t len)
 			return i;
 		}
 		else
-			r = (r << 6) | (s[i] & 0x3F);
+			r = (r << 6) | (s[i] & 0x3F); /* 10xxxxxx */
 
 	if(i < n) /* must have reached len limit */
 		return 0;
 
 	/* reject invalid runes and overlong sequences */
-	if(n > UTFmax || runelen(r) < (int)n || BADRUNE(r))
+	if(n > 4 || runelen(r) < (int)n || BADRUNE(r))
 		r = Runeerror;
 
 	*p = r;
