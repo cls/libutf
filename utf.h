@@ -4,7 +4,7 @@
 
 #include <stddef.h>
 
-typedef unsigned int Rune;
+typedef int Rune;
 
 enum {
 	UTFmax    = 6,       /* maximum bytes per rune */

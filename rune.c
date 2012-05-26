@@ -12,7 +12,7 @@
                  : (((x) & 0xFE) == 0xFC) ? 6 /* 1111110x */ \
                                           : 0 )
 
-#define BADRUNE(x) ((x) > Runemax \
+#define BADRUNE(x) ((x) < 0 || (x) > Runemax \
                 || ((x) & 0xFFFE) == 0xFFFE \
                 || ((x) >= 0xD800 && (x) <= 0xDFFF) \
                 || ((x) >= 0xFDD0 && (x) <= 0xFDEF))
@@ -74,19 +74,21 @@ charntorune(Rune *p, const char *s, size_t len)
 	}
 	/* add values from continuation bytes */
 	for(i = 1; i < MIN(n, len); i++)
-		if((s[i] & 0xC0) != 0x80) {
-			/* expected continuation */
+		if((s[i] & 0xC0) == 0x80) {
+			/* add bits from continuation byte to rune value
+	 		 * cannot overflow: 6 byte sequences contain 31 bits */
+			r = (r << 6) | (s[i] & 0x3F); /* 10xxxxxx */
+		}
+		else { /* expected continuation */
 			*p = Runeerror;
 			return i;
 		}
-		else
-			r = (r << 6) | (s[i] & 0x3F); /* 10xxxxxx */
 
 	if(i < n) /* must have reached len limit */
 		return 0;
 
-	/* reject invalid runes and overlong sequences */
-	if(n > 4 || runelen(r) < (int)n || BADRUNE(r))
+	/* reject invalid or overlong sequences */
+	if(BADRUNE(r) || runelen(r) < (int)n)
 		r = Runeerror;
 
 	*p = r;
@@ -96,12 +98,12 @@ charntorune(Rune *p, const char *s, size_t len)
 int
 runelen(Rune r)
 {
-	if(r <= 0x7F)
+	if(BADRUNE(r))
+		return 0; /* error */
+	else if(r <= 0x7F)
 		return 1;
 	else if(r <= 0x07FF)
 		return 2;
-	else if(BADRUNE(r))
-		return 0; /* error */
 	else if(r <= 0xFFFF)
 		return 3;
 	else
