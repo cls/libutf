@@ -2,7 +2,7 @@
 
 include config.mk
 
-SRC = rune.c runetype.c utf.c
+SRC = rune.c utf.c
 OBJ = $(SRC:.c=.o)
 
 LIB = libutf.a
@@ -19,9 +19,6 @@ utftest: utftest.o $(LIB)
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-runetypebody.h: mkrunetype.awk UnicodeData-$(UNICODE).txt
-	$(AWK) -f mkrunetype.awk UnicodeData-$(UNICODE).txt > $@
-
 install: $(LIB) $(INC) $(MAN)
 	@echo @ install libutf to $(DESTDIR)$(PREFIX)
 	@mkdir -p $(DESTDIR)$(PREFIX)/lib
@@ -30,14 +27,12 @@ install: $(LIB) $(INC) $(MAN)
 	@cp $(INC) $(DESTDIR)$(PREFIX)/include/$(INC)
 	@mkdir -p $(DESTDIR)$(PREFIX)/share/man/man3
 	@cp rune.3 $(DESTDIR)$(PREFIX)/share/man/man3/rune.3
-	@sed 's/$$UNICODE/$(UNICODE)/g' isalpharune.3 > $(DESTDIR)$(PREFIX)/share/man/man3/isalpharune.3
 
 uninstall:
 	@echo @ uninstall libutf from $(DESTDIR)$(PREFIX)
 	@rm -f $(DESTDIR)$(PREFIX)/lib/$(LIB)
 	@rm -f $(DESTDIR)$(PREFIX)/include/$(INC)
 	@rm -f $(DESTDIR)$(PREFIX)/share/man/man3/rune.3
-	@rm -f $(DESTDIR)$(PREFIX)/share/man/man3/isalpharune.3
 
 clean:
 	rm -f $(LIB) utftest utftest.o $(OBJ)
