@@ -1,13 +1,7 @@
 /* See LICENSE file for copyright and license details. */
-#include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "utf.h"
-
-static void eprintf(const char *, ...);
-
-static const char *argv0;
 
 int
 main(void)
@@ -20,41 +14,26 @@ main(void)
 	for(i = 0; (n = fread(&buf[i], 1, sizeof buf - i, stdin)); i = n-i) {
 		for(n += i, i = 0; (len = charntorune(&r, &buf[i], n-i)); i += len) {
 			if(r == Runeerror) {
-				fprintf(stderr, "%s: error converting char to rune:", argv0);
+				fputs("error converting char to rune:", stderr);
 				for(j = i; j < i+len; j++)
 					fprintf(stderr, " %02X", (unsigned char)buf[j]);
 				fputc('\n', stderr);
 			}
-			if((len2 = runetochar(rbuf, &r))) {
-				if(!fwrite(rbuf, len2, 1, stdout))
-					eprintf("write error:");
+			if(!(len2 = runetochar(rbuf, &r))) {
+				fprintf(stderr, "error converting rune to char: U+%02X\n", r);
+				continue;
 			}
-			else
-				fprintf(stderr, "%s: error converting rune to char: U+%02X\n", argv0, r);
+			else if(!fwrite(rbuf, len2, 1, stdout)) {
+				perror("write error");
+				return 1;
+			}
 		}
 		if(i < n)
 			memcpy(buf, &buf[i], n-i);
 	}
-	if(ferror(stdin))
-		eprintf("read error:");
-
-	return EXIT_SUCCESS;
-}
-
-void
-eprintf(const char *fmt, ...)
-{
-	va_list ap;
-
-	fprintf(stderr, "%s: ", argv0);
-
-	va_start(ap, fmt);
-	vfprintf(stderr, fmt, ap);
-	va_end(ap);
-
-	if(fmt[0] && fmt[strlen(fmt)-1] == ':') {
-		fputc(' ', stderr);
-		perror(NULL);
+	if(ferror(stdin)) {
+		perror("read error");
+		return 1;
 	}
-	exit(EXIT_FAILURE);
+	return 0;
 }
