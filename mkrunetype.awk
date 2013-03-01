@@ -13,6 +13,7 @@ $3 == "Lu" { upperv[upperc++] = $1; }
 $3 == "Ll" { lowerv[lowerc++] = $1; }
 $3 == "Lt" { titlev[titlec++] = $1; }
 $3 == "Nd" { digitv[digitc++] = $1; }
+$3  ~ /^M/ { combiningv[combiningc++] = $1; }
 
 END {
 	print "/* Automatically generated from "FILENAME" by mkrunetype.awk */\n"
@@ -23,6 +24,7 @@ END {
 	mkis("lower", lowerv, lowerc);
 	mkis("title", titlev, titlec);
 	mkis("digit", digitv, digitc);
+	mkis("combining", combiningv, combiningc);
 }
 
 # parse hexadecimal rune index to int

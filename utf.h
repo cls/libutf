@@ -32,5 +32,6 @@ int isspacerune(Rune);
 int istitlerune(Rune);
 int isupperrune(Rune);
 int isdigitrune(Rune);
+int iscombiningrune(Rune);
 
 #endif
