@@ -76,7 +76,7 @@ charntorune(Rune *p, const char *s, size_t len)
 	for(i = 1; i < MIN(n, len); i++)
 		if((s[i] & 0xC0) == 0x80) {
 			/* add bits from continuation byte to rune value
-	 		 * cannot overflow: 6 byte sequences contain 31 bits */
+			 * cannot overflow: 6 byte sequences contain 31 bits */
 			r = (r << 6) | (s[i] & 0x3F); /* 10xxxxxx */
 		}
 		else { /* expected continuation */
