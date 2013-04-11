@@ -12,6 +12,8 @@ main(int argc, char *argv[])
 	int i;
 	FILE *fp;
 
+	Runeerror = -1; /* distinguish error from U+FFFD */
+
 	if(argc <= 1)
 		utftest(stdin, "stdin");
 	else for(i = 1; i < argc; i++) {
@@ -40,6 +42,7 @@ utftest(FILE *fp, const char *s)
 				for(j = i; j < i+len; j++)
 					fprintf(stderr, " %02X", (unsigned char)buf[j]);
 				fputc('\n', stderr);
+				r = 0xFFFD;
 			}
 			if(!(len2 = runetochar(rbuf, &r))) {
 				fprintf(stderr, "encoding error: U+%02X\n", r);
