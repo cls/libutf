@@ -5,7 +5,7 @@
 char *
 utfecpy(char *to, char *end, const char *from)
 {
-	Rune r = Runeerror;
+	Rune r = -1;
 	size_t i, n;
 
 	/* seek through to find final full rune */
