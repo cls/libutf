@@ -49,15 +49,15 @@ utftest(FILE *fp, const char *s)
 				continue;
 			}
 			else if(!fwrite(rbuf, len2, 1, stdout)) {
-				perror(s);
+				perror("stdout");
 				exit(1);
 			}
 		}
 		if(i < n)
 			memcpy(buf, &buf[i], n-i);
 	}
-	if(ferror(stdout)) {
-		perror("stdout");
+	if(ferror(fp)) {
+		perror(s);
 		exit(1);
 	}
 }
