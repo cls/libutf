@@ -12,7 +12,7 @@ enum {
 	Runemax  = 0x10FFFF /* maximum rune value */
 };
 
-extern int Runeerror; /* decoding error in utf */
+extern Rune Runeerror; /* decoding error in utf */
 
 int runetochar(char *, const Rune *);
 int chartorune(Rune *, const char *);
