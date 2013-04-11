@@ -17,6 +17,8 @@
                 || ((x) >= 0xD800 && (x) <= 0xDFFF) \
                 || ((x) >= 0xFDD0 && (x) <= 0xFDEF))
 
+int Runeerror = 0xFFFD;
+
 int
 runetochar(char *s, const Rune *p)
 {

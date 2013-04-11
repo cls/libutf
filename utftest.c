@@ -24,7 +24,7 @@
 		} \
 	}
 
-#define ARGC()  _argr
+#define ARGC() _argr
 
 static void eprintf(const char *, ...);
 static void usage(void);
@@ -39,6 +39,8 @@ main(int argc, char *argv[])
 	int len, len2;
 	size_t i, j, n;
 	Rune r;
+
+	Runeerror = -1; /* distinguish error from U+FFFD */
 
 	ARGBEGIN {
 	case 'a': aflag = 1; break;
@@ -65,6 +67,7 @@ main(int argc, char *argv[])
 				for(j = i; j < i+len; j++)
 					fprintf(stderr, " %02X", (unsigned char)buf[j]);
 				fputc('\n', stderr);
+				r = 0xFFFD;
 			}
 			if(((aflag && isalpharune(r)) || (dflag && isdigitrune(r))
 			 || (lflag && islowerrune(r)) || (sflag && isspacerune(r))
