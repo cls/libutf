@@ -1,0 +1,3 @@
+*.o
+libutf.a
+utftest
