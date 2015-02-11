@@ -50,8 +50,8 @@ charntorune(Rune *p, const char *s, size_t len)
 		return 0;
 
 	if((s[0] & 0x80) == 0x00) {      /* 0xxxxxxx */
-		r = s[0];
-		n = 1;
+		*p = s[0];
+		return 1;
 	}
 	else if((s[0] & 0xE0) == 0xC0) { /* 110xxxxx */
 		r = s[0] & 0x1F;
