@@ -90,7 +90,7 @@ charntorune(Rune *p, const char *s, size_t len)
 		return 0;
 
 	/* reject invalid or overlong sequences */
-	if(BADRUNE(r) || runelen(r) < (int)n)
+	if(runelen(r) < (int)n)
 		r = Runeerror;
 
 	*p = r;
