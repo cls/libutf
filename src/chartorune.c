@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 #include "utf.h"
 
-int Runeerror = 0xFFFD;
+Rune Runeerror = 0xFFFD;
 
 int
 chartorune(Rune *p, const char *s)

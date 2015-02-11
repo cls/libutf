@@ -80,7 +80,7 @@ main(int argc, char *argv[])
 					eprintf("write error:");
 			}
 			else
-				fprintf(stderr, "%s: error converting rune to char: U+%02X\n", argv0, r);
+				fprintf(stderr, "%s: error converting rune to char: U+%02lX\n", argv0, (long)r);
 		}
 		if(i < n)
 			memcpy(buf, &buf[i], n-i);
