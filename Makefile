@@ -2,7 +2,8 @@
 
 include config.mk
 
-SRC = rune.c runetype.c utf.c
+SRC = chartorune.c runelen.c runetochar.c runetype.c utfecpy.c utflen.c \
+      utfnlen.c utfrrune.c utfrune.c utfutf.c
 OBJ = $(SRC:.c=.o)
 
 LIB = libutf.a
