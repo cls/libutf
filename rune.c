@@ -1,8 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 #include "utf.h"
 
-#define MIN(x,y)  ((x) < (y) ? (x) : (y))
-
 int Runeerror = 0xFFFD;
 
 int
@@ -78,8 +76,11 @@ charntorune(Rune *p, const char *s, size_t len)
 		return 1;
 	}
 
+	if(len > n)
+		len = n;
+
 	/* add values from continuation bytes */
-	for(i = 1; i < MIN(n, len); i++)
+	for(i = 1; i < len; i++)
 		if((s[i] & 0xC0) == 0x80) {
 			/* add bits from continuation byte to rune value
 			 * cannot overflow: 6 byte sequences contain 31 bits */
