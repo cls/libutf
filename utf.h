@@ -27,6 +27,8 @@ char *utfrune(const char *, Rune);
 char *utfrrune(const char *, Rune);
 char *utfutf(const char *, const char *);
 
+int utftorunestr(Rune *, const char *);
+
 int isalpharune(Rune);
 int islowerrune(Rune);
 int isspacerune(Rune);
