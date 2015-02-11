@@ -12,7 +12,7 @@ INC = utf.h
 all: $(LIB) utftest
 
 $(LIB): $(OBJ)
-	@rm -f $(AR)
+	@rm -f $@
 	$(AR) -rcs $@ $(OBJ)
 
 utftest: utftest.o $(LIB)
