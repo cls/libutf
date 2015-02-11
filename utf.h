@@ -20,14 +20,11 @@ int charntorune(Rune *, const char *, size_t);
 int runelen(const Rune);
 size_t runenlen(const Rune *, size_t);
 int fullrune(const char *, size_t);
-char *utfecpy(char *, char *, const char *);
 size_t utflen(const char *);
 size_t utfnlen(const char *, size_t);
 char *utfrune(const char *, Rune);
 char *utfrrune(const char *, Rune);
 char *utfutf(const char *, const char *);
-
-int utftorunestr(Rune *, const char *);
 
 int isalpharune(Rune);
 int islowerrune(Rune);
@@ -35,5 +32,19 @@ int isspacerune(Rune);
 int istitlerune(Rune);
 int isupperrune(Rune);
 int isdigitrune(Rune);
+
+Rune *runestrcat(Rune *, const Rune *);
+Rune *runestrncat(Rune *, const Rune *, size_t);
+int runestrcmp(const Rune *, const Rune *);
+int runestrncmp(const Rune *, const Rune *, size_t);
+Rune *runestrcpy(Rune *, const Rune *);
+Rune *runestrncpy(Rune *, const Rune *, size_t);
+size_t runestrlen(const Rune *);
+Rune *runestrchr(const Rune *, Rune);
+Rune *runestrrchr(const Rune *, Rune);
+Rune *runestrdup(const Rune *);
+Rune *runestrstr(const Rune *, const Rune *);
+
+int utftorunestr(Rune *, const char *);
 
 #endif

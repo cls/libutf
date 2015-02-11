@@ -2,21 +2,22 @@
 #include "utf.h"
 
 char *
-utfutf(const char *s, const char *t)
+utfutf(const char *s1, const char *s2)
 {
-	const char *p, *q;
+	const char *p1, *p2;
 	Rune r0, r1, r2;
-	int n, m;
+	int n1, n2;
 
-	for(chartorune(&r0, t); (s = utfrune(s, r0)); s++) {
-		for(p = s, q = t; *q && *p; p += n, q += m) {
-			n = chartorune(&r1, p);
-			m = chartorune(&r2, q);
+	chartorune(&r0, s2);
+	for(s1 = utfrune(s1, r0); *s1 != 0; s1 = utfrune(s1+1, r0))
+		for(p1 = s1, p2 = s2;; p1 += n1, p2 += n2) {
+			n2 = chartorune(&r2, p2);
+			if(r2 == 0)
+				return (char *)s1;
+			n1 = chartorune(&r1, p1);
 			if(r1 != r2)
 				break;
 		}
-		if(!*q)
-			return (char *)s;
-	}
+
 	return NULL;
 }

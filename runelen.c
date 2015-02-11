@@ -29,5 +29,6 @@ runenlen(const Rune *p, size_t len)
 
 	for(i = 0; i < len; i++)
 		n += runelen(p[i]);
+
 	return n;
 }
