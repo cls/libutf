@@ -2,50 +2,59 @@
 
 include config.mk
 
-SRC = chartorune.c fgetrune.c fputrune.c runelen.c runestrcat.c runestrchr.c \
-      runestrcmp.c runestrcpy.c runestrdup.c runestrlen.c runestrrchr.c \
-      runestrstr.c runetochar.c runetype.c utflen.c utfnlen.c utfrrune.c \
-      utfrune.c utftorunestr.c utfutf.c
+SRC = src/chartorune.c src/fgetrune.c src/fputrune.c src/runelen.c \
+      src/runestrcat.c src/runestrchr.c src/runestrcmp.c src/runestrcpy.c \
+      src/runestrdup.c src/runestrlen.c src/runestrrchr.c src/runestrstr.c \
+      src/runetochar.c src/runetype.c src/utflen.c src/utfnlen.c src/utfrrune.c \
+      src/utfrune.c src/utftorunestr.c src/utfutf.c
 OBJ = $(SRC:.c=.o)
 
-LIB = libutf.a
-HDR = utf.h utfio.h
+LIB = lib/libutf.a
+HDR = include/utf.h include/utfio.h
+MAN = share/man/rune.3 share/man/isalpharune.3
 
-all: $(LIB) utftest
+all: $(LIB) bin/utftest
 
 $(LIB): $(OBJ)
+	@echo AR -r $@
+	@mkdir -p lib
 	@rm -f $@
-	$(AR) -rcs $@ $(OBJ)
+	@$(AR) -rcs $@ $(OBJ)
 
-utftest: utftest.o $(LIB)
-	$(CC) $(LDFLAGS) -o $@ utftest.o $(LIB)
+bin/utftest: src/utftest.o $(LIB)
+	@echo CC -o $@
+	@$(CC) $(LDFLAGS) -o $@ src/utftest.o $(LIB)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $<
+	@echo CC -c $<
+	@$(CC) $(CFLAGS) -c -o $@ $<
 
 $(OBJ): $(HDR)
 
-runetype.c: runetypebody.i
+src/runetype.c: src/runetypebody.i
 
-runetypebody.i: mkrunetype.awk UnicodeData-$(UNICODE).txt
-	$(AWK) -f mkrunetype.awk UnicodeData-$(UNICODE).txt > $@
+src/runetypebody.i: bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
+	@echo AWK -f bin/mkrunetype.awk
+	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt > $@
 
 install: $(LIB) $(HDR) $(MAN)
-	@echo @ install libutf to $(DESTDIR)$(PREFIX)
+	@echo installing libutf to $(DESTDIR)$(PREFIX)...
 	@mkdir -p $(DESTDIR)$(PREFIX)/lib
-	@cp $(LIB) $(DESTDIR)$(PREFIX)/lib/$(LIB)
+	@cp $(LIB) $(DESTDIR)$(PREFIX)/lib/
 	@mkdir -p $(DESTDIR)$(PREFIX)/include
 	@cp $(HDR) $(DESTDIR)$(PREFIX)/include/
 	@mkdir -p $(DESTDIR)$(PREFIX)/share/man/man3
-	@cp rune.3 $(DESTDIR)$(PREFIX)/share/man/man3/rune.3
-	@sed 's/$$UNICODE/$(UNICODE)/g' isalpharune.3 > $(DESTDIR)$(PREFIX)/share/man/man3/isalpharune.3
+	@cp share/man/rune.3 $(DESTDIR)$(PREFIX)/share/man/man3/
+	@sed 's/$$UNICODE/$(UNICODE)/g' share/man/isalpharune.3 > $(DESTDIR)$(PREFIX)/share/man/man3/isalpharune.3
 
 uninstall:
-	@echo @ uninstall libutf from $(DESTDIR)$(PREFIX)
+	@echo uninstalling libutf from $(DESTDIR)$(PREFIX)...
 	@rm -f $(DESTDIR)$(PREFIX)/lib/$(LIB)
-	@for f in $(HDR); do rm -f $(DESTDIR)$(PREFIX)/include/$$f; done
+	@rm -f $(DESTDIR)$(PREFIX)/include/utf.h
+	@rm -f $(DESTDIR)$(PREFIX)/include/utfio.h
 	@rm -f $(DESTDIR)$(PREFIX)/share/man/man3/rune.3
 	@rm -f $(DESTDIR)$(PREFIX)/share/man/man3/isalpharune.3
 
 clean:
-	rm -f runetypebody.i $(OBJ) $(LIB) utftest.o utftest
+	@echo cleaning...
+	@rm -f src/runetypebody.i $(OBJ) $(LIB) src/utftest.o bin/utftest

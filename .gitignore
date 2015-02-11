@@ -1,3 +1,4 @@
-*.o
-libutf.a
-utftest
+bin/utftest
+lib/libutf.a
+src/runetypebody.i
+src/*.o
