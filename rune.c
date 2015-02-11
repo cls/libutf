@@ -3,20 +3,6 @@
 
 #define MIN(x,y)  ((x) < (y) ? (x) : (y))
 
-#define UTFSEQ(x) ((((x) & 0x80) == 0x00) ? 1 /* 0xxxxxxx */ \
-                 : (((x) & 0xC0) == 0x80) ? 0 /* 10xxxxxx */ \
-                 : (((x) & 0xE0) == 0xC0) ? 2 /* 110xxxxx */ \
-                 : (((x) & 0xF0) == 0xE0) ? 3 /* 1110xxxx */ \
-                 : (((x) & 0xF8) == 0xF0) ? 4 /* 11110xxx */ \
-                 : (((x) & 0xFC) == 0xF8) ? 5 /* 111110xx */ \
-                 : (((x) & 0xFE) == 0xFC) ? 6 /* 1111110x */ \
-                                          : 0 )
-
-#define BADRUNE(x) ((x) < 0 || (x) > Runemax \
-                || ((x) & 0xFFFE) == 0xFFFE \
-                || ((x) >= 0xD800 && (x) <= 0xDFFF) \
-                || ((x) >= 0xFDD0 && (x) <= 0xFDEF))
-
 int Runeerror = 0xFFFD;
 
 int
@@ -63,17 +49,25 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(len == 0) /* can't even look at s[0] */
 		return 0;
 
-	switch((n = UTFSEQ(s[0]))) {
-	case 1: r = s[0];        break; /* 0xxxxxxx */
-	case 2: r = s[0] & 0x1F; break; /* 110xxxxx */
-	case 3: r = s[0] & 0x0F; break; /* 1110xxxx */
-	case 4: r = s[0] & 0x07; break; /* 11110xxx */
-	case 5: r = s[0] & 0x03; break; /* 111110xx */
-	case 6: r = s[0] & 0x01; break; /* 1111110x */
-	default: /* invalid sequence */
+	r = s[0];
+
+	if((r & 0x80) == 0x00)	    /* 0xxxxxxx */
+		n = 1;
+	else if((r & 0xE0) == 0xC0) /* 110xxxxx */
+		n = 2;
+	else if((r & 0xF0) == 0xE0) /* 1110xxxx */
+		n = 3;
+	else if((r & 0xF8) == 0xF0) /* 11110xxx */
+		n = 4;
+	else if((r & 0xFC) == 0xF8) /* 111110xx */
+		n = 5;
+	else if((r & 0xFE) == 0xFC) /* 1111110x */
+		n = 6;
+	else { /* invalid leading byte */
 		*p = Runeerror;
 		return 1;
 	}
+
 	/* add values from continuation bytes */
 	for(i = 1; i < MIN(n, len); i++)
 		if((s[i] & 0xC0) == 0x80) {
@@ -100,16 +94,22 @@ charntorune(Rune *p, const char *s, size_t len)
 int
 runelen(Rune r)
 {
-	if(BADRUNE(r))
-		return 0; /* error */
+	if(r < 0)
+		return 0; /* negative rune */
 	else if(r <= 0x7F)
 		return 1;
 	else if(r <= 0x07FF)
 		return 2;
+	else if((r >= 0xD800 && r <= 0xDFFF)
+	     || (r >= 0xFDD0 && r <= 0xFDEF)
+	     || (r & 0xFFFE) == 0xFFFE)
+		return 0; /* surrogate or noncharacter */
 	else if(r <= 0xFFFF)
 		return 3;
-	else
+	else if(r <= Runemax)
 		return 4;
+	else
+		return 0; /* rune too large */
 }
 
 size_t
