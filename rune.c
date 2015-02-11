@@ -49,20 +49,30 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(len == 0) /* can't even look at s[0] */
 		return 0;
 
-	r = s[0];
-
-	if((r & 0x80) == 0x00)	    /* 0xxxxxxx */
+	if((s[0] & 0x80) == 0x00) {      /* 0xxxxxxx */
+		r = s[0];
 		n = 1;
-	else if((r & 0xE0) == 0xC0) /* 110xxxxx */
+	}
+	else if((s[0] & 0xE0) == 0xC0) { /* 110xxxxx */
+		r = s[0] & 0x1F;
 		n = 2;
-	else if((r & 0xF0) == 0xE0) /* 1110xxxx */
+	}
+	else if((s[0] & 0xF0) == 0xE0) { /* 1110xxxx */
+		r = s[0] & 0x0F;
 		n = 3;
-	else if((r & 0xF8) == 0xF0) /* 11110xxx */
+	}
+	else if((s[0] & 0xF8) == 0xF0) { /* 11110xxx */
+		r = s[0] & 0x07;
 		n = 4;
-	else if((r & 0xFC) == 0xF8) /* 111110xx */
+	}
+	else if((s[0] & 0xFC) == 0xF8) { /* 111110xx */
+		r = s[0] & 0x03;
 		n = 5;
-	else if((r & 0xFE) == 0xFC) /* 1111110x */
+	}
+	else if((s[0] & 0xFE) == 0xFC) { /* 1111110x */
+		r = s[0] & 0x01;
 		n = 6;
+	}
 	else { /* invalid leading byte */
 		*p = Runeerror;
 		return 1;
