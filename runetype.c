@@ -6,7 +6,7 @@
 static int rune1cmp(const void *, const void *);
 static int rune2cmp(const void *, const void *);
 
-#include "runetypebody.h"
+#include "runetypebody.i"
 
 int
 rune1cmp(const void *v1, const void *v2)

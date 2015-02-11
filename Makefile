@@ -7,7 +7,7 @@ SRC = chartorune.c runelen.c runetochar.c runetype.c utfecpy.c utflen.c \
 OBJ = $(SRC:.c=.o)
 
 LIB = libutf.a
-INC = utf.h
+HDR = utf.h
 
 all: $(LIB) utftest
 
@@ -21,15 +21,17 @@ utftest: utftest.o $(LIB)
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-runetypebody.h: mkrunetype.awk UnicodeData-$(UNICODE).txt
+runetype.c: runetypebody.i
+
+runetypebody.i: mkrunetype.awk UnicodeData-$(UNICODE).txt
 	$(AWK) -f mkrunetype.awk UnicodeData-$(UNICODE).txt > $@
 
-install: $(LIB) $(INC) $(MAN)
+install: $(LIB) $(HDR) $(MAN)
 	@echo @ install libutf to $(DESTDIR)$(PREFIX)
 	@mkdir -p $(DESTDIR)$(PREFIX)/lib
 	@cp $(LIB) $(DESTDIR)$(PREFIX)/lib/$(LIB)
 	@mkdir -p $(DESTDIR)$(PREFIX)/include
-	@cp $(INC) $(DESTDIR)$(PREFIX)/include/$(INC)
+	@cp $(HDR) $(DESTDIR)$(PREFIX)/include/$(HDR)
 	@mkdir -p $(DESTDIR)$(PREFIX)/share/man/man3
 	@cp rune.3 $(DESTDIR)$(PREFIX)/share/man/man3/rune.3
 	@sed 's/$$UNICODE/$(UNICODE)/g' isalpharune.3 > $(DESTDIR)$(PREFIX)/share/man/man3/isalpharune.3
@@ -37,9 +39,9 @@ install: $(LIB) $(INC) $(MAN)
 uninstall:
 	@echo @ uninstall libutf from $(DESTDIR)$(PREFIX)
 	@rm -f $(DESTDIR)$(PREFIX)/lib/$(LIB)
-	@rm -f $(DESTDIR)$(PREFIX)/include/$(INC)
+	@rm -f $(DESTDIR)$(PREFIX)/include/$(HDR)
 	@rm -f $(DESTDIR)$(PREFIX)/share/man/man3/rune.3
 	@rm -f $(DESTDIR)$(PREFIX)/share/man/man3/isalpharune.3
 
 clean:
-	rm -f $(LIB) utftest utftest.o $(OBJ)
+	rm -f runetypebody.i $(OBJ) $(LIB) utftest.o utftest
