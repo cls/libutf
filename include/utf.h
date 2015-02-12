@@ -2,15 +2,10 @@
 #ifndef UTF_H
 #define UTF_H
 
-#include <limits.h>
 #include <stddef.h>
+#include <stdint.h>
 
-/* Rune must be at least 32 bits long */
-#if INT_MAX >= (1 << 31) - 1
-typedef int Rune;
-#else
-typedef long Rune;
-#endif
+typedef int32_t Rune;
 
 #define UTFmax   6          /* maximum bytes per rune */
 #define Runeself 0x80       /* rune and utf are equal (<) */
