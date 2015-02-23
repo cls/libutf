@@ -25,12 +25,21 @@ char *utfrune(const char *, Rune);
 char *utfrrune(const char *, Rune);
 char *utfutf(const char *, const char *);
 
+int isalnumrune(Rune);
 int isalpharune(Rune);
+int isblankrune(Rune);
+int iscntrlrune(Rune);
+int isdigitrune(Rune);
+int isgraphrune(Rune);
 int islowerrune(Rune);
+int isprintrune(Rune);
+int ispunctrune(Rune);
 int isspacerune(Rune);
 int istitlerune(Rune);
 int isupperrune(Rune);
-int isdigitrune(Rune);
+int isxdigitrune(Rune);
+Rune tolowerrune(Rune);
+Rune toupperrune(Rune);
 
 Rune *runestrcat(Rune *, const Rune *);
 Rune *runestrncat(Rune *, const Rune *, size_t);

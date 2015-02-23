@@ -1,13 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 #include <stdlib.h>
 #include "utf.h"
-
-#define nelem(x)  (sizeof (x) / sizeof *(x))
-
-static int rune1cmp(const void *, const void *);
-static int rune2cmp(const void *, const void *);
-
-#include "runetypebody.i"
+#include "runetype.h"
 
 int
 rune1cmp(const void *v1, const void *v2)
