@@ -3,15 +3,15 @@
 include config.mk
 
 GEN = src/isalpharune.c src/isspacerune.c src/iscntrlrune.c src/upperrune.c \
-      src/lowerrune.c src/istitlerune.c src/isdigitrune.c src/isalnumrune.c \
-      src/isblankrune.c src/isprintrune.c src/isgraphrune.c src/ispunctrune.c \
-      src/isxdigitrune.c
+      src/lowerrune.c src/istitlerune.c src/isdigitrune.c
 
 SRC = src/chartorune.c src/fgetrune.c src/fputrune.c src/runelen.c \
       src/runestrcat.c src/runestrchr.c src/runestrcmp.c src/runestrcpy.c \
       src/runestrdup.c src/runestrlen.c src/runestrrchr.c src/runestrstr.c \
       src/runetochar.c src/runetype.c src/utflen.c src/utfnlen.c src/utfrrune.c \
-      src/utfrune.c src/utftorunestr.c src/utfutf.c $(GEN)
+      src/utfrune.c src/utftorunestr.c src/utfutf.c src/isalnumrune.c \
+      src/isblankrune.c src/isprintrune.c src/isgraphrune.c src/ispunctrune.c \
+      src/isxdigitrune.c $(GEN)
 OBJ = $(SRC:.c=.o)
 
 LIB = lib/libutf.a
@@ -38,7 +38,7 @@ $(OBJ): $(HDR)
 
 $(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 	@echo AWK -f bin/mkrunetype.awk
-	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt > $@
+	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 
 install: $(LIB) $(HDR) $(MAN)
 	@echo installing libutf to $(DESTDIR)$(PREFIX)
