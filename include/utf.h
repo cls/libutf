@@ -13,6 +13,10 @@ typedef int32_t Rune;
 
 extern Rune Runeerror; /* decoding error in utf */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int runetochar(char *, const Rune *);
 int chartorune(Rune *, const char *);
 int charntorune(Rune *, const char *, size_t);
@@ -54,5 +58,9 @@ Rune *runestrdup(const Rune *);
 Rune *runestrstr(const Rune *, const Rune *);
 
 int utftorunestr(Rune *, const char *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
