@@ -2,7 +2,8 @@
 .Dt RUNE 3
 .Os
 .Sh NAME
-.Nm runetochar, chartorune, charntorune, runelen, runenlen, fullrune, utfecpy, utflen, utfnlen, utfrune, utfrrune, utfutf
+.Nm runetochar, chartorune, charntorune, runelen, runenlen, fullrune, utfecpy, \
+    utflen, utfnlen, utfrune, utfrrune, utfutf
 .Nd UTF-8 rune conversion
 .Sh SYNOPSIS
 .In utf.h
@@ -85,10 +86,12 @@ bytes of the UTF-8 string
 .Fa s
 form a complete rune, and 0 otherwise.
 .Pp
-The following functions are analogous to the corresponding string routines, with `utf' substituted for `str', and `rune' for `chr'.
+The following functions are analogous to the corresponding string routines, with
+`utf' substituted for `str', and `rune' for `chr'.
 .Pp
 .Fn utfecpy
-copies UTF-8 sequences until a nul byte has been copied, but writes no sequences beyond
+copies UTF-8 sequences until a nul byte has been copied, but writes no sequences
+beyond
 .Fa end .
 If any sequences are copied,
 .Fa to
@@ -137,9 +140,11 @@ is the null string,
 returns
 .Fa s .
 .Sh CONFORMING TO
-These functions are compatible with those defined in the Plan 9 C library, with the exception of
+These functions are compatible with those defined in the Plan 9 C library, with
+the exception of
 .Fn charntorune ,
 which is an extension.
-However, these functions are much stricter about UTF-8 validity than their Plan 9 counterparts (the kind from up there).
+However, these functions are much stricter about UTF-8 validity than their Plan
+9 counterparts.
 .Sh SEE ALSO
 .Xr isalpharune 3

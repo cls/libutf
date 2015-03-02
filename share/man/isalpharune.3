@@ -2,7 +2,9 @@
 .Dt ISALPHARUNE 3
 .Os
 .Sh NAME
-.Nm isalpharune, islowerrune, isspacerune, istitlerune, isupperrune, isdigitrune
+.Nm isalnumrune, isalpharune, isblankrune, iscntrlrune, isdigitrune, \
+    isgraphrune, islowerrune, isprintrune, ispunctrune, isspacerune, \
+    istitlerune, isupperrune, isxdigitrune
 .Nd Unicode rune classification
 .Sh SYNOPSIS
 .In utf.h
@@ -20,11 +22,14 @@
 .Fn "int isupperrune" "Rune r"
 .Fn "int isxdigitrune" "Rune r"
 .Sh DESCRIPTION
-These functions classify Unicode runes according to their properties defined in the Unicode standard, analogously to
+These functions classify Unicode runes according to their properties defined
+in the Unicode standard, analogously to
 .Xr isalpha 3
 for ASCII.
 .Sh CONFORMING TO
-These functions are compatible with those defined in the Plan 9 C library, but are generated automatically from the Unicode $UNICODE Character Database, so classifications may differ.
+These functions are compatible with those defined in the Plan 9 C library, but
+are generated automatically from the Unicode $UNICODE Character Database, so
+classifications may differ.
 .Sh SEE ALSO
 .Xr isalpha 3 ,
 .Xr rune 3 ,

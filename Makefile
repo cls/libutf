@@ -26,8 +26,8 @@ SRC = $(GEN) \
 	src/runestrchr.c \
 	src/runestrcmp.c \
 	src/runestrcpy.c \
-	src/runestrecpy.c \
 	src/runestrdup.c \
+	src/runestrecpy.c \
 	src/runestrlen.c \
 	src/runestrrchr.c \
 	src/runestrstr.c \
