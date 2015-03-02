@@ -1,4 +1,10 @@
 bin/utftest
 lib/libutf.a
-src/runetypebody.i
 src/*.o
+src/isalpharune.c
+src/iscntrlrune.c
+src/isdigitrune.c
+src/isspacerune.c
+src/istitlerune.c
+src/lowerrune.c
+src/upperrune.c

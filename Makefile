@@ -2,16 +2,43 @@
 
 include config.mk
 
-GEN = src/isalpharune.c src/isspacerune.c src/iscntrlrune.c src/upperrune.c \
-      src/lowerrune.c src/istitlerune.c src/isdigitrune.c
+GEN = \
+	src/isalpharune.c \
+	src/iscntrlrune.c \
+	src/isdigitrune.c \
+	src/isspacerune.c \
+	src/istitlerune.c \
+	src/lowerrune.c \
+	src/upperrune.c \
 
-SRC = src/chartorune.c src/fgetrune.c src/fputrune.c src/runelen.c \
-      src/runestrcat.c src/runestrchr.c src/runestrcmp.c src/runestrcpy.c \
-      src/runestrdup.c src/runestrlen.c src/runestrrchr.c src/runestrstr.c \
-      src/runetochar.c src/runetype.c src/utflen.c src/utfnlen.c src/utfrrune.c \
-      src/utfrune.c src/utftorunestr.c src/utfutf.c src/isalnumrune.c \
-      src/isblankrune.c src/isprintrune.c src/isgraphrune.c src/ispunctrune.c \
-      src/isxdigitrune.c $(GEN)
+SRC = $(GEN) \
+	src/chartorune.c \
+	src/fgetrune.c \
+	src/fputrune.c \
+	src/isalnumrune.c \
+	src/isblankrune.c \
+	src/isgraphrune.c \
+	src/isprintrune.c \
+	src/ispunctrune.c \
+	src/isxdigitrune.c \
+	src/runelen.c \
+	src/runestrcat.c \
+	src/runestrchr.c \
+	src/runestrcmp.c \
+	src/runestrcpy.c \
+	src/runestrdup.c \
+	src/runestrlen.c \
+	src/runestrrchr.c \
+	src/runestrstr.c \
+	src/runetochar.c \
+	src/runetype.c \
+	src/utflen.c \
+	src/utfnlen.c \
+	src/utfrrune.c \
+	src/utfrune.c \
+	src/utftorunestr.c \
+	src/utfutf.c \
+
 OBJ = $(SRC:.c=.o)
 
 LIB = lib/libutf.a
