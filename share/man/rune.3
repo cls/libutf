@@ -6,30 +6,18 @@
 .Nd UTF-8 rune conversion
 .Sh SYNOPSIS
 .In utf.h
-.Ft int
-.Fn runetochar "char *s" "Rune *p"
-.Ft int
-.Fn chartorune "Rune *p" "char *s"
-.Ft int
-.Fn charntorune "Rune *p" "char *s" "size_t len"
-.Ft int
-.Fn runelen "Rune r"
-.Ft int
-.Fn runenlen "Rune *p" "size_t len"
-.Ft int
-.Fn fullrune "char *s" "size_t len"
-.Ft char *
-.Fn utfecpy "char *to" "char *end" "char *from"
-.Ft size_t
-.Fn utflen "char *s"
-.Ft size_t
-.Fn utfnlen "char *s" "size_t len"
-.Ft char *
-.Fn utfrune "char *s" "Rune r"
-.Ft char *
-.Fn utfrrune "char *s" "Rune r"
-.Ft char *
-.Fn utfutf "char *s" "char *t"
+.Fn "int runetochar" "char *s" "Rune *p"
+.Fn "int chartorune" "Rune *p" "char *s"
+.Fn "int charntorune" "Rune *p" "char *s" "size_t len"
+.Fn "int runelen" "Rune r"
+.Fn "int runenlen" "Rune *p" "size_t len"
+.Fn "int fullrune" "char *s" "size_t len"
+.Fn "char *utfecpy" "char *to" "char *end" "char *from"
+.Fn "size_t utflen" "char *s"
+.Fn "size_t utfnlen" "char *s" "size_t len"
+.Fn "char *utfrune" "char *s" "Rune r"
+.Fn "char *utfrrune" "char *s" "Rune r"
+.Fn "char *utfutf" "char *s" "char *t"
 .Sh DESCRIPTION
 The following functions convert to and from a UTF-8 byte stream and Unicode runes.
 .Pp
