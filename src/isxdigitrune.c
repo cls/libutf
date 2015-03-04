@@ -4,5 +4,5 @@
 int
 isxdigitrune(Rune r)
 {
-	return (r >= '0' && (r - '0') < 10) || (r >= 'a' && (r - 'a') < 6);
+	return (r >= '0' && r <= '9') || (r >= 'A' && r <= 'F') || (r >= 'a' && r <= 'f');
 }
