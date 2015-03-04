@@ -10,12 +10,14 @@ runelen(Rune r)
 		return 1;
 	else if(r <= 0x07FF)
 		return 2;
-	else if((r >= 0xD800 && r <= 0xDFFF)
-	     || (r >= 0xFDD0 && r <= 0xFDEF)
-	     || (r & 0xFFFE) == 0xFFFE)
-		return 0; /* surrogate or noncharacter */
-	else if(r <= 0xFFFF)
+	else if(r <= 0xD7FF)
 		return 3;
+	else if(r <= 0xDFFF)
+		return 0; /* surrogate character */
+	else if(r <= 0xFFFD)
+		return 3;
+	else if(r <= 0xFFFF)
+		return 0; /* illegal character */
 	else if(r <= Runemax)
 		return 4;
 	else
