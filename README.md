@@ -1,6 +1,8 @@
 libutf
 ------
 
+[![Build Status](https://travis-ci.org/graymalkin/libutf.svg)](https://travis-ci.org/graymalkin/libutf)
+
 This is a C89 UTF-8 library, with an API compatible with that of Plan 9's
 libutf, but with a number of improvements:
 

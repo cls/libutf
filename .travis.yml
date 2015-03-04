@@ -1,0 +1,8 @@
+language: c
+script:
+  - make
+after_success:
+  - make tests
+compiler:
+  - clang
+  - gcc
