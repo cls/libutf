@@ -45,6 +45,7 @@ OBJ = $(SRC:.c=.o)
 
 TESTSRC = \
 	test/boundary.c \
+	test/malformed.c \
 	test/kosme.c \
 
 TEST = $(TESTSRC:.c=)
