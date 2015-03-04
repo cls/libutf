@@ -7,7 +7,9 @@ extern "C" {
 #endif
 
 int fgetrune(Rune *, FILE *);
+int fgetrunestr(Rune *, int, FILE *);
 int fputrune(const Rune *, FILE *);
+int fputrunestr(const Rune *, FILE *);
 
 #ifdef __cplusplus
 }

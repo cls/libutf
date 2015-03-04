@@ -10,3 +10,14 @@ fputrune(const Rune *p, FILE *fp)
 
 	return fwrite(buf, runetochar(buf, p), 1, fp);
 }
+
+int
+fputrunestr(const Rune *s, FILE *fp)
+{
+	const Rune *p;
+	int m = 0;
+
+	for(p = s; *p != 0; p++)
+		m += fputrune(p, fp);
+	return m;
+}

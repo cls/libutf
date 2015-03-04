@@ -15,8 +15,24 @@ fgetrune(Rune *p, FILE *fp)
 		buf[i++] = c;
 	} while(!fullrune(buf, i));
 
-	if(i == 0)
-		return EOF;
+	if(i > 0 && charntorune(p, buf, i) == 0)
+		*p = Runeerror;
+	return i;
+}
 
-	return charntorune(p, buf, i);
+int
+fgetrunestr(Rune *s, int len, FILE *fp)
+{
+	int i, n, m = 0;
+
+	for(i = 0; i < len-1; i++)
+		if((n = fgetrune(&s[i], fp)) == 0 || s[i] == '\n') {
+			i++;
+			break;
+		}
+		else
+			m += n;
+
+	s[i] = 0;
+	return m;
 }
