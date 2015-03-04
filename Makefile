@@ -74,6 +74,8 @@ $(LIB): $(OBJ)
 
 $(OBJ): $(HDR)
 
+$(GEN): src/runetype.h
+
 $(TEST): $(LIB) test/tap.h
 
 $(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
