@@ -6,10 +6,12 @@ GEN = \
 	src/isalpharune.c \
 	src/iscntrlrune.c \
 	src/isdigitrune.c \
+	src/islowerrune.c \
 	src/isspacerune.c \
 	src/istitlerune.c \
-	src/lowerrune.c \
-	src/upperrune.c \
+	src/isupperrune.c \
+
+GENOBJ = $(GEN:.c=.o)
 
 SRC = $(GEN) \
 	src/chartorune.c \
@@ -32,7 +34,6 @@ SRC = $(GEN) \
 	src/runestrrchr.c \
 	src/runestrstr.c \
 	src/runetochar.c \
-	src/runetype.c \
 	src/utfecpy.c \
 	src/utflen.c \
 	src/utfnlen.c \
@@ -74,13 +75,13 @@ $(LIB): $(OBJ)
 
 $(OBJ): $(HDR)
 
-$(GEN): src/runetype.h
-
-$(TEST): $(LIB) test/tap.h
-
 $(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 	@echo AWK -f bin/mkrunetype.awk
 	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
+
+$(GENOBJ): src/runetype.i
+
+$(TEST): $(LIB) test/tap.h
 
 tests: $(TEST)
 	@echo testing
