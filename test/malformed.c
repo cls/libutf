@@ -4,11 +4,14 @@
 
 #define CHECK(S,N,T,RS) do { \
 	if(is(utflen(S), (N), RS" is "#N" runes long")) { \
+		Rune r; \
 		int i; \
-		utftorunestr(rbuf, (S)); \
-		for(i = 0; i < (N) && rbuf[i] == -1; i++) \
-			if((T) && i % 2 == 0 && rbuf[i+1] == ' ') \
-				i++; \
+		const char *p = (S); \
+		for(i = 0; *p != '\0'; i++) { \
+			p += chartorune(&r, p); \
+			if(r != Runeerror && !((T) && i % 2 == 1 && r == ' ')) \
+				break; \
+		} \
 		is(i, (N), RS" read as in error"); \
 	} \
 	else \
@@ -18,14 +21,12 @@
 int
 main(void)
 {
-	Rune rbuf[65];
-
 	Runeerror = -1;
 
 	plan(56);
 
 	CHECK("\x80", 1, 0, "lone smallest continuation byte");
-	CHECK("\xBF", 1, 0, "long largest continuation byte");
+	CHECK("\xBF", 1, 0, "lone largest continuation byte");
 
 	CHECK("\x80\xBF", 2, 0, "2 continuation bytes");
 	CHECK("\x80\xBF\x80", 3, 0, "3 continuation bytes");
