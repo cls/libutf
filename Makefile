@@ -79,7 +79,7 @@ $(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 	@echo AWK -f bin/mkrunetype.awk
 	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 
-$(GENOBJ): src/runetype.i
+$(GENOBJ): src/runetype.h
 
 $(TEST): $(LIB) test/tap.h
 

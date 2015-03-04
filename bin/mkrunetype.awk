@@ -132,7 +132,7 @@ function mkis(name, runes, nrune, file, cases, casename) {
 	mkisarray(file, "laces1",  2, nlace1, laces10, laces11);
 	mkisarray(file, "laces2",  2, nlace2, laces20, laces21);
 
-	print "#include \"runetype.i\"" > file;
+	print "#include \"runetype.h\"" > file;
 }
 
 function mkisarray(file, name, ncols, nrows, column1, column2, column3) {
