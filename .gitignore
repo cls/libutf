@@ -3,10 +3,10 @@ src/*.o
 src/isalpharune.c
 src/iscntrlrune.c
 src/isdigitrune.c
+src/islowerrune.c
 src/isspacerune.c
 src/istitlerune.c
-src/lowerrune.c
-src/upperrune.c
+src/isupperrune.c
 test/boundary
 test/illegal
 test/kosme

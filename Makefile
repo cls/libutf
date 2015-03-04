@@ -34,6 +34,7 @@ SRC = $(GEN) \
 	src/runestrrchr.c \
 	src/runestrstr.c \
 	src/runetochar.c \
+	src/runetype.c \
 	src/utfecpy.c \
 	src/utflen.c \
 	src/utfnlen.c \
@@ -79,7 +80,7 @@ $(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 	@echo AWK -f bin/mkrunetype.awk
 	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 
-$(GENOBJ): src/runetype.h
+$(GENOBJ) src/runetype.o: src/runetype.h
 
 $(TEST): $(LIB) test/tap.h
 
