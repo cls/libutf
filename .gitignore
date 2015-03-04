@@ -1,4 +1,3 @@
-bin/utftest
 lib/libutf.a
 src/*.o
 src/isalpharune.c
@@ -8,3 +7,4 @@ src/isspacerune.c
 src/istitlerune.c
 src/lowerrune.c
 src/upperrune.c
+test/kosme

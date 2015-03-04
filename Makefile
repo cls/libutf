@@ -43,11 +43,16 @@ SRC = $(GEN) \
 
 OBJ = $(SRC:.c=.o)
 
+TESTSRC = \
+	test/kosme.c \
+
+TEST = $(TESTSRC:.c=)
+
 LIB = lib/libutf.a
 HDR = include/utf.h include/utfio.h
 MAN = share/man/rune.3 share/man/isalpharune.3
 
-all: $(LIB) bin/utftest
+all: $(LIB)
 
 $(LIB): $(OBJ)
 	@echo AR -r $@
@@ -55,19 +60,25 @@ $(LIB): $(OBJ)
 	@rm -f $@
 	@$(AR) -rcs $@ $(OBJ)
 
-bin/utftest: src/utftest.o $(LIB)
-	@echo CC -o $@
-	@$(CC) $(LDFLAGS) -o $@ src/utftest.o $(LIB)
-
 .c.o:
 	@echo CC -c $<
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
+.c:
+	@echo CC -o $@
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIB)
+
 $(OBJ): $(HDR)
+
+$(TEST): $(LIB) test/tap.h
 
 $(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 	@echo AWK -f bin/mkrunetype.awk
 	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
+
+tests: $(TEST)
+	@echo testing
+	@prove $(TEST)
 
 install: $(LIB) $(HDR) $(MAN)
 	@echo installing libutf to $(DESTDIR)$(PREFIX)
@@ -89,4 +100,4 @@ uninstall:
 
 clean:
 	@echo cleaning
-	@rm -f $(GEN) $(OBJ) $(LIB) src/utftest.o bin/utftest
+	@rm -f $(GEN) $(OBJ) $(LIB) $(TEST)
