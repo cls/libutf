@@ -10,3 +10,4 @@ src/upperrune.c
 test/boundary
 test/kosme
 test/malformed
+test/overlong
