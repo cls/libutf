@@ -26,7 +26,9 @@ fgetrunestr(Rune *s, int len, FILE *fp)
 	int i, n, m = 0;
 
 	for(i = 0; i < len-1; i++)
-		if((n = fgetrune(&s[i], fp)) == 0 || s[i] == '\n') {
+		if((n = fgetrune(&s[i], fp)) == 0)
+			break;
+		else if(s[i] == '\n') {
 			i++;
 			break;
 		}
