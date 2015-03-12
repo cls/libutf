@@ -5,6 +5,7 @@ include config.mk
 GEN = \
 	src/isalpharune.c \
 	src/iscntrlrune.c \
+	src/iscombiningrune.c \
 	src/isdigitrune.c \
 	src/islowerrune.c \
 	src/isspacerune.c \
@@ -19,7 +20,6 @@ SRC = $(GEN) \
 	src/fputrune.c \
 	src/isalnumrune.c \
 	src/isblankrune.c \
-	src/iscombiningrune.c \
 	src/isgraphrune.c \
 	src/isprintrune.c \
 	src/ispunctrune.c \

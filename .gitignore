@@ -2,6 +2,7 @@ lib/libutf.a
 src/*.o
 src/isalpharune.c
 src/iscntrlrune.c
+src/iscombiningrune.c
 src/isdigitrune.c
 src/islowerrune.c
 src/isspacerune.c
