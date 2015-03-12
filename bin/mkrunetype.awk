@@ -14,6 +14,7 @@ $3 == "Lu" { uppers[nupper++] = $1; tolowers[nuppercase++] = ($14 == "") ? $1 : 
 $3 == "Ll" { lowers[nlower++] = $1; touppers[nlowercase++] = ($13 == "") ? $1 : $13; }
 $3 == "Lt" { titles[ntitle++] = $1; }
 $3 == "Nd" { digits[ndigit++] = $1; }
+$3  ~ /^M/ { combinings[ncombining++] = $1; }
 
 END {
 	mkis("alpha", alphas, nalpha, "src/isalpharune.c");
@@ -23,6 +24,7 @@ END {
 	mkis("space", spaces, nspace, "src/isspacerune.c");
 	mkis("title", titles, ntitle, "src/istitlerune.c");
 	mkis("upper", uppers, nupper, "src/isupperrune.c", tolowers, "lower");
+	mkis("combining", combinings, ncombining, "src/iscombiningrune.c");
 }
 
 # parse hexadecimal rune index to int

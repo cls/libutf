@@ -42,6 +42,7 @@ int isspacerune(Rune);
 int istitlerune(Rune);
 int isupperrune(Rune);
 int isxdigitrune(Rune);
+int iscombiningrune(Rune);
 Rune tolowerrune(Rune);
 Rune toupperrune(Rune);
 

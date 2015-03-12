@@ -19,6 +19,7 @@ SRC = $(GEN) \
 	src/fputrune.c \
 	src/isalnumrune.c \
 	src/isblankrune.c \
+	src/iscombiningrune.c \
 	src/isgraphrune.c \
 	src/isprintrune.c \
 	src/ispunctrune.c \
