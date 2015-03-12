@@ -52,7 +52,7 @@ main(void)
 	CHECK("\xF8\x80\x80\x80", 1, 0, "5-byte sequence U+0000 with last byte missing");
 	CHECK("\xFC\x80\x80\x80\x80", 1, 0, "6-byte sequence U+0000 with last byte missing");
 
-	CHECK("\xDF", 1, 0, "2-byte sequence U+0000007FF with last byte missing");
+	CHECK("\xDF", 1, 0, "2-byte sequence U+000007FF with last byte missing");
 	CHECK("\xEF\xBF", 1, 0, "3-byte sequence U+0000FFFF with last byte missing");
 	CHECK("\xF7\xBF\xBF", 1, 0, "4-byte sequence U+001FFFFF with last byte missing");
 	CHECK("\xFB\xBF\xBF\xBF", 1, 0, "5-byte sequence U+03FFFFFF with last byte missing");
