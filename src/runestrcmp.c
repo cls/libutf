@@ -3,12 +3,6 @@
 #include "utf.h"
 
 int
-runestrcmp(const Rune *s1, const Rune *s2)
-{
-	return runestrncmp(s1, s2, SIZE_MAX);
-}
-
-int
 runestrncmp(const Rune *s1, const Rune *s2, size_t n)
 {
 	Rune r1, r2;

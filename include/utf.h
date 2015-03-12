@@ -11,6 +11,11 @@ typedef int32_t Rune;
 #define Runeself 0x80       /* rune and utf are equal (<) */
 #define Runemax (0x10FFFFL) /* maximum rune value */
 
+#define chartorune(P, S)   charntorune(P, S, UTFmax)
+#define runestrcat(S1, S2) runestrncat(S1, S2, SIZE_MAX)
+#define runestrcmp(S1, S2) runestrncmp(S1, S2, SIZE_MAX)
+#define runestrcpy(S1, S2) runestrncpy(S1, S2, SIZE_MAX)
+
 extern Rune Runeerror; /* decoding error in utf */
 
 #ifdef __cplusplus
@@ -18,7 +23,6 @@ extern "C" {
 #endif
 
 int runetochar(char *, const Rune *);
-int chartorune(Rune *, const char *);
 int charntorune(Rune *, const char *, size_t);
 int runelen(const Rune);
 size_t runenlen(const Rune *, size_t);
@@ -46,11 +50,8 @@ int iscombiningrune(Rune);
 Rune tolowerrune(Rune);
 Rune toupperrune(Rune);
 
-Rune *runestrcat(Rune *, const Rune *);
 Rune *runestrncat(Rune *, const Rune *, size_t);
-int runestrcmp(const Rune *, const Rune *);
 int runestrncmp(const Rune *, const Rune *, size_t);
-Rune *runestrcpy(Rune *, const Rune *);
 Rune *runestrncpy(Rune *, const Rune *, size_t);
 size_t runestrlen(const Rune *);
 Rune *runestrchr(const Rune *, Rune);

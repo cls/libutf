@@ -4,12 +4,6 @@
 Rune Runeerror = 0xFFFD;
 
 int
-chartorune(Rune *p, const char *s)
-{
-	return charntorune(p, s, UTFmax);
-}
-
-int
 charntorune(Rune *p, const char *s, size_t len)
 {
 	unsigned int i, n;

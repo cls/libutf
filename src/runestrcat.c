@@ -3,12 +3,6 @@
 #include "utf.h"
 
 Rune *
-runestrcat(Rune *s1, const Rune *s2)
-{
-	return runestrncat(s1, s2, SIZE_MAX);
-}
-
-Rune *
 runestrncat(Rune *s0, const Rune *s2, size_t n)
 {
 	size_t i;
