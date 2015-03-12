@@ -9,7 +9,7 @@ utfrrune(const char *s, Rune r)
 	Rune r0;
 	int n;
 
-	if(r < Runeself)
+	if(r < Runeself && r >= 0)
 		return strrchr(s, r);
 
 	for(; *s != '\0'; s += n) {

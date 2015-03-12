@@ -9,7 +9,7 @@ utfnlen(const char *s, size_t len)
 	Rune r;
 	int n;
 
-	for(i = 0; (n = charntorune(&r, p, len-(p-s))) && r != '\0'; i++)
+	for(i = 0; (n = charntorune(&r, p, len-(p-s))) && r != 0; i++)
 		p += n;
 	return i;
 }

@@ -45,7 +45,7 @@ charntorune(Rune *p, const char *s, size_t len)
 		len = n;
 
 	/* add values from continuation bytes */
-	for(i = 1; i < len; i++)
+	for(; i < len; i++)
 		if((s[i] & 0xC0) == 0x80) {
 			/* add bits from continuation byte to rune value
 			 * cannot overflow: 6 byte sequences contain 31 bits */
@@ -60,7 +60,7 @@ charntorune(Rune *p, const char *s, size_t len)
 		return 0;
 
 	/* reject invalid or overlong sequences */
-	if(runelen(r) < (int)n) {
+	if(p && runelen(r) < (int)n) {
 		r = Runeerror;
 		goto done;
 	}

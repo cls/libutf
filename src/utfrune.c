@@ -5,7 +5,7 @@
 char *
 utfrune(const char *s, Rune r)
 {
-	if(r < Runeself) {
+	if(r < Runeself && r >= 0) {
 		return strchr(s, r);
 	}
 	else if(r == Runeerror) {
@@ -17,6 +17,7 @@ utfrune(const char *s, Rune r)
 			if(r == r0)
 				return (char *)s;
 		}
+		return NULL;
 	}
 	else {
 		char buf[UTFmax+1];
@@ -27,5 +28,4 @@ utfrune(const char *s, Rune r)
 		buf[n] = '\0';
 		return strstr(s, buf);
 	}
-	return NULL;
 }
