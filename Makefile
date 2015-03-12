@@ -16,8 +16,6 @@ GENOBJ = $(GEN:.c=.o)
 
 SRC = $(GEN) \
 	src/chartorune.c \
-	src/fgetrune.c \
-	src/fputrune.c \
 	src/isalnumrune.c \
 	src/isblankrune.c \
 	src/isgraphrune.c \
@@ -56,7 +54,7 @@ TESTSRC = \
 TEST = $(TESTSRC:.c=)
 
 LIB = lib/libutf.a
-HDR = include/utf.h include/utfio.h
+HDR = include/utf.h
 MAN = share/man/rune.3 share/man/isalpharune.3
 
 all: $(LIB)
@@ -103,7 +101,6 @@ uninstall:
 	@echo uninstalling libutf from $(DESTDIR)$(PREFIX)
 	@rm -f $(DESTDIR)$(PREFIX)/lib/$(LIB)
 	@rm -f $(DESTDIR)$(PREFIX)/include/utf.h
-	@rm -f $(DESTDIR)$(PREFIX)/include/utfio.h
 	@rm -f $(DESTDIR)$(PREFIX)/share/man/man3/rune.3
 	@rm -f $(DESTDIR)$(PREFIX)/share/man/man3/isalpharune.3
 
