@@ -1,6 +1,5 @@
 /* See LICENSE file for copyright and license details. */
 #include "runetype.h"
-#include "utf.h"
 
 int
 rune1cmp(const void *v1, const void *v2)

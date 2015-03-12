@@ -76,7 +76,7 @@ $(LIB): $(OBJ)
 
 $(OBJ): $(HDR)
 
-$(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
+$(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt src/runetype.h src/runetypebody.h
 	@echo AWK -f bin/mkrunetype.awk
 	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 
