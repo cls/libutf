@@ -6,15 +6,15 @@ Rune Runeerror = 0xFFFD;
 int
 charntorune(Rune *p, const char *s, size_t len)
 {
-	unsigned int i, n;
+	unsigned int n, i = 1;
 	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */
 		return 0;
 
 	if((s[0] & 0x80) == 0x00) {      /* 0xxxxxxx */
-		*p = s[0];
-		return 1;
+		r = s[0];
+		goto done;
 	}
 	else if((s[0] & 0xE0) == 0xC0) { /* 110xxxxx */
 		r = s[0] & 0x1F;
@@ -37,8 +37,8 @@ charntorune(Rune *p, const char *s, size_t len)
 		n = 6;
 	}
 	else { /* invalid leading byte */
-		*p = Runeerror;
-		return 1;
+		r = Runeerror;
+		goto done;
 	}
 
 	if(len > n)
@@ -52,25 +52,21 @@ charntorune(Rune *p, const char *s, size_t len)
 			r = (r << 6) | (s[i] & 0x3F); /* 10xxxxxx */
 		}
 		else { /* expected continuation */
-			*p = Runeerror;
-			return i;
+			r = Runeerror;
+			goto done;
 		}
 
 	if(i < n) /* must have reached len limit */
 		return 0;
 
 	/* reject invalid or overlong sequences */
-	if(runelen(r) < (int)n)
+	if(runelen(r) < (int)n) {
 		r = Runeerror;
+		goto done;
+	}
 
-	*p = r;
-	return n;
-}
-
-int
-fullrune(const char *s, size_t len)
-{
-	Rune r;
-
-	return charntorune(&r, s, len) > 0;
+done:
+	if(p)
+		*p = r;
+	return i;
 }
