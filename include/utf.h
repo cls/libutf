@@ -76,6 +76,7 @@ Rune *runestrrchr(const Rune *, Rune);
 Rune *runestrdup(const Rune *);
 Rune *runestrstr(const Rune *, const Rune *);
 
+int runewidth(Rune);
 int utftorunestr(Rune *, const char *);
 
 #ifdef __cplusplus
