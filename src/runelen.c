@@ -4,9 +4,7 @@
 int
 runelen(Rune r)
 {
-	if(r < 0)
-		return 0; /* negative rune */
-	else if(r <= 0x7F)
+	if(r <= 0x7F)
 		return 1;
 	else if(r <= 0x07FF)
 		return 2;

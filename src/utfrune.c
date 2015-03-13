@@ -5,7 +5,7 @@
 char *
 utfrune(const char *s, Rune r)
 {
-	if(r < Runeself && r >= 0) {
+	if(r < Runeself) {
 		return strchr(s, r);
 	}
 	else if(r == Runeerror) {
