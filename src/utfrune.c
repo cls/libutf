@@ -5,27 +5,15 @@
 char *
 utfrune(const char *s, Rune r)
 {
-	if(r < Runeself) {
+	char buf[UTFmax+1];
+	int n;
+
+	if(r < Runeself)
 		return strchr(s, r);
-	}
-	else if(r == Runeerror) {
-		Rune r0;
-		int n;
 
-		for(; *s != '\0'; s += n) {
-			n = chartorune(&r0, s);
-			if(r == r0)
-				return (char *)s;
-		}
+	if(!(n = runetochar(buf, &r)))
 		return NULL;
-	}
-	else {
-		char buf[UTFmax+1];
-		int n;
 
-		if(!(n = runetochar(buf, &r)))
-			return NULL;
-		buf[n] = '\0';
-		return strstr(s, buf);
-	}
+	buf[n] = '\0';
+	return strstr(s, buf);
 }
