@@ -28,8 +28,6 @@ typedef unsigned long Rune;
 #define Runeself 0x80             /* rune and utf are equal (<) */
 #define Runemax  RUNE_C(0x10FFFF) /* maximum rune value */
 
-#define chartorune(p, s)   charntorune(p, s, UTFmax)
-#define fullrune(s, n)     charntorune(NULL, s, n)
 #define runestrcat(s1, s2) runestrncat(s1, s2, SIZE_MAX)
 #define runestrcmp(s1, s2) runestrncmp(s1, s2, SIZE_MAX)
 #define runestrcpy(s1, s2) runestrncpy(s1, s2, SIZE_MAX)
@@ -42,6 +40,8 @@ extern "C" {
 
 int runetochar(char *, const Rune *);
 int charntorune(Rune *, const char *, size_t);
+int chartorune(Rune *, const char *);
+int fullrune(const char *, size_t);
 int runelen(const Rune);
 size_t runenlen(const Rune *, size_t);
 size_t utflen(const char *);
