@@ -5,8 +5,15 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#if __STDC_VERSION__ >= 201112L
+#if __STDC_VERSION__ >= 201112L || __cplusplus >= 201103L
+#if !defined(__cplusplus)
+#if defined(__has_include) && __has_include(<uchar.h>)
 #include <uchar.h>
+#else
+typedef uint_least16_t char16_t;
+typedef uint_least32_t char32_t;
+#endif
+#endif
 #ifdef __STDC_UTF_32__
 #define RUNE_C INT32_C
 typedef char32_t Rune;
