@@ -5,22 +5,16 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#if __STDC_VERSION__ >= 201112L
-#include <uchar.h>
-#ifdef __STDC_UTF_32__
-#define RUNE_C INT32_C
+#ifdef UINT32_C
+#define RUNE_C(x) UINT32_C(x)
+#if __cplusplus >= 201103L
 typedef char32_t Rune;
-#endif
-#endif
-
-#ifndef RUNE_C
-#ifdef INT32_C
-#define RUNE_C INT32_C
-typedef uint_least32_t Rune;
 #else
-#define RUNE_C(x) x##L
-typedef unsigned long Rune;
+typedef uint_least32_t Rune;
 #endif
+#else
+#define RUNE_C(x) x##UL
+typedef unsigned long Rune;
 #endif
 
 #define UTFmax 6 /* maximum bytes per rune */
