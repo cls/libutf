@@ -31,47 +31,45 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(n == 1)
 		goto done;
 
-	if(n == 0) {
-		r = Runeerror;
-		goto done;
-	}
+	if(n == 0)
+		goto fail;
 
 	if(len == 1) /* reached len limit */
 		return 0;
 
-	if((s[1] & 0xC0) != 0x80) { /* not a continuation byte */
-		r = Runeerror;
-		goto done;
-	}
+	if((s[1] & 0xC0) != 0x80) /* not a continuation byte */
+		goto fail;
 
 	x = 0xFF >> n;
 	r = ((r & x) << 6) | (s[1] & 0x3F); /* 10xxxxxx */
 	i = 2;
 
-	if(r <= x) { /* overlong sequence */
-		r = Runeerror;
+	if(n == 2)
 		goto done;
-	}
+
+	if(r <= x) /* overlong sequence */
+		goto fail;
 
 	if(len > n)
 		len = n;
 
 	/* add values from continuation bytes */
-	for(; i < len; i++) {
-		if((s[i] & 0xC0) != 0x80) { /* not a continuation byte */
-			r = Runeerror;
-			goto done;
-		}
-		/* add bits from continuation byte to rune value
-		 * cannot overflow: 6 byte sequences contain 31 bits */
+	do {
+		if((s[i] & 0xC0) != 0x80) /* not a continuation byte */
+			goto fail;
+
 		r = (r << 6) | (s[i] & 0x3F); /* 10xxxxxx */
-	}
+	} while(++i < len);
 
 	if(i < n) /* must have reached len limit */
 		return 0;
 
 done:
 	*p = r;
+	return i;
+
+fail:
+	*p = Runeerror;
 	return i;
 }
 
