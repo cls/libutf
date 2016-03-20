@@ -54,12 +54,12 @@ charntorune(Rune *p, const char *s, size_t len)
 		len = n;
 
 	/* add values from continuation bytes */
-	do {
+	for(; i < len; i++) {
 		if((s[i] & 0xC0) != 0x80) /* not a continuation byte */
 			goto fail;
 
 		r = (r << 6) | (s[i] & 0x3F); /* 10xxxxxx */
-	} while(++i < len);
+	}
 
 	if(i < n) /* must have reached len limit */
 		return 0;
