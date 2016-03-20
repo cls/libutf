@@ -5,7 +5,6 @@ include config.mk
 GEN = \
 	src/isalpharune.c \
 	src/iscntrlrune.c \
-	src/iscombiningrune.c \
 	src/isdigitrune.c \
 	src/islowerrune.c \
 	src/isspacerune.c \
@@ -34,13 +33,11 @@ SRC = $(GEN) \
 	src/runestrstr.c \
 	src/runetochar.c \
 	src/runetype.c \
-	src/runewidth.c \
 	src/utfecpy.c \
 	src/utflen.c \
 	src/utfnlen.c \
 	src/utfrrune.c \
 	src/utfrune.c \
-	src/utftorunestr.c \
 	src/utfutf.c \
 
 OBJ = $(SRC:.c=.o)

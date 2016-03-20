@@ -57,7 +57,6 @@ int isspacerune(Rune);
 int istitlerune(Rune);
 int isupperrune(Rune);
 int isxdigitrune(Rune);
-int iscombiningrune(Rune);
 Rune tolowerrune(Rune);
 Rune toupperrune(Rune);
 
@@ -69,9 +68,6 @@ Rune *runestrchr(const Rune *, Rune);
 Rune *runestrrchr(const Rune *, Rune);
 Rune *runestrdup(const Rune *);
 Rune *runestrstr(const Rune *, const Rune *);
-
-int runewidth(Rune);
-int utftorunestr(Rune *, const char *);
 
 #ifdef __cplusplus
 }
