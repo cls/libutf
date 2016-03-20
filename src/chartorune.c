@@ -96,6 +96,9 @@ fullrune(const char *s, size_t len)
 	if(len >= n) /* must be long enough */
 		return 1;
 
+	if(len == 1) /* reached len limit */
+		return 0;
+
 	/* check if an error means this rune is full */
 
 	if((s[1] & 0xC0) != 0x80) /* not a continuation byte */
