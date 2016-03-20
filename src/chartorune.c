@@ -11,14 +11,14 @@ static const char lookup[128] = {
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 011xxxxx */
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 100xxxxx */
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 101xxxxx */
-	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* 110xxxxx */
+	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* 110xxxxx */
 	3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 0, /* 111xxxxx */
 };
 
 int
 charntorune(Rune *p, const char *s, size_t len)
 {
-	unsigned int n, i = 1;
+	unsigned int i, n, x;
 	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */
@@ -26,6 +26,7 @@ charntorune(Rune *p, const char *s, size_t len)
 
 	r = (unsigned char)s[0];
 	n = lookup[r/2];
+	i = 1;
 
 	if(n == 1)
 		goto done;
@@ -35,7 +36,22 @@ charntorune(Rune *p, const char *s, size_t len)
 		goto done;
 	}
 
-	r &= 0xFF >> n;
+	if(len == 1) /* reached len limit */
+		return 0;
+
+	if((s[1] & 0xC0) != 0x80) { /* not a continuation byte */
+		r = Runeerror;
+		goto done;
+	}
+
+	x = 0xFF >> n;
+	r = ((r & x) << 6) | (s[1] & 0x3F); /* 10xxxxxx */
+	i = 2;
+
+	if(r <= x) { /* overlong sequence */
+		r = Runeerror;
+		goto done;
+	}
 
 	if(len > n)
 		len = n;
@@ -54,12 +70,6 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(i < n) /* must have reached len limit */
 		return 0;
 
-	/* reject invalid or overlong sequences */
-	if(runelen(r) < (int)n) {
-		r = Runeerror;
-		goto done;
-	}
-
 done:
 	*p = r;
 	return i;
@@ -74,7 +84,7 @@ chartorune(Rune *p, const char *s)
 int
 fullrune(const char *s, size_t len)
 {
-	unsigned int n, i = 1;
+	unsigned int i, n, x;
 	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */
@@ -87,7 +97,17 @@ fullrune(const char *s, size_t len)
 		return 1;
 
 	/* check if an error means this rune is full */
-	for(; i < len; i++)
+
+	if((s[1] & 0xC0) != 0x80) /* not a continuation byte */
+		return 1;
+
+	x = 0xFF >> n;
+	r = ((r & x) << 6) | (s[1] & 0x3F); /* 10xxxxxx */
+
+	if(r <= x) /* overlong sequence */
+		return 1;
+
+	for(i = 2; i < len; i++)
 		if((s[i] & 0xC0) != 0x80) /* not a continuation byte */
 			return 1;
 
