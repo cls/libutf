@@ -22,27 +22,27 @@ main(void)
 	{
 		Rune r;
 		is(chartorune(&r, ""), 1, "rune in \"\" is 1 byte long");
-		is(r, 0x000000L, "rune in \"\" is U+000000 NULL");
+		is(r, RUNE_C(0x0000), "rune in \"\" is U+0000 NULL");
 	}
 
-	CHECK("\xC2\x80", 2, 0x000080L, "U+000080 <control>");
-	CHECK("\xE0\xA0\x80", 3, 0x000800L, "U+000800 SAMARITAN LETTER ALAF");
-	CHECK("\xF0\x90\x80\x80", 4, 0x010000L, "U+010000 LINEAR B SYLLABLE B008 A");
-	CHECK("\xF8\x88\x80\x80\x80", 5, Runeerror, "in error (invalid)");
-	CHECK("\xFC\x84\x80\x80\x80\x80", 6, Runeerror, "in error (invalid)");
+	CHECK("\xC2\x80",                 2, RUNE_C(0x00000080), "U+00000080 <control>");
+	CHECK("\xE0\xA0\x80",             3, RUNE_C(0x00000800), "U+00000800 SAMARITAN LETTER ALAF");
+	CHECK("\xF0\x90\x80\x80",         4, RUNE_C(0x00010000), "U+00010000 LINEAR B SYLLABLE B008 A");
+	CHECK("\xF8\x88\x80\x80\x80",     5, RUNE_C(0x00200000), "U+00200000 <not a character>");
+	CHECK("\xFC\x84\x80\x80\x80\x80", 6, RUNE_C(0x04000000), "U+04000000 <not a character>");
 
-	CHECK("\x7F", 1, 0x00007FL, "U+00007F DELETE");
-	CHECK("\xDF\xBF", 2, 0x0007FFL, "U+0007FF (unallocated)");
-	CHECK("\xEF\xBF\xBF", 3, Runeerror, "in error (invalid)");
-	CHECK("\xF7\xBF\xBF\xBF", 4, Runeerror, "in error (invalid)");
-	CHECK("\xFB\xBF\xBF\xBF\xBF", 5, Runeerror, "in error (invalid)");
-	CHECK("\xFD\xBF\xBF\xBF\xBF\xBF", 6, Runeerror, "in error (invalid)");
+	CHECK("\x7F",                     1, RUNE_C(0x0000007F), "U+0000007F DELETE");
+	CHECK("\xDF\xBF",                 2, RUNE_C(0x000007FF), "U+000007FF");
+	CHECK("\xEF\xBF\xBF",             3, RUNE_C(0x0000FFFF), "U+0000FFFF <not a character>");
+	CHECK("\xF7\xBF\xBF\xBF",         4, RUNE_C(0x001FFFFF), "U+001FFFFF <not a character>");
+	CHECK("\xFB\xBF\xBF\xBF\xBF",     5, RUNE_C(0x03FFFFFF), "U+03FFFFFF <not a character>");
+	CHECK("\xFD\xBF\xBF\xBF\xBF\xBF", 6, RUNE_C(0x7FFFFFFF), "U+7FFFFFFF <not a character>");
 
-	CHECK("\xED\x9F\xBF", 3, 0x00D7FFL, "U+00D7FF (unallocated)");
-	CHECK("\xEE\x80\x80", 3, 0x00E000L, "U+00E000 <Private Use, First>");
-	CHECK("\xEF\xBF\xBD", 3, 0x00FFFDL, "U+00FFFD REPLACEMENT CHARACTER");
-	CHECK("\xF4\x8F\xBF\xBF", 4, 0x10FFFFL, "U+10FFFF (noncharacter)");
-	CHECK("\xF4\x90\x80\x80", 4, Runeerror, "in error (invalid)");
+	CHECK("\xED\x9F\xBF",             3, RUNE_C(0x0000D7FF), "U+0000D7FF");
+	CHECK("\xEE\x80\x80",             3, RUNE_C(0x0000E000), "U+0000E000 <Private Use, First>");
+	CHECK("\xEF\xBF\xBD",             3, RUNE_C(0x0000FFFD), "U+0000FFFD REPLACEMENT CHARACTER");
+	CHECK("\xF4\x8F\xBF\xBF",         4, RUNE_C(0x0010FFFF), "U+0010FFFF <not a character>");
+	CHECK("\xF4\x90\x80\x80",         4, RUNE_C(0x00110000), "U+00110000 <not a character>");
 
 	return 0;
 }

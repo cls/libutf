@@ -23,7 +23,7 @@ main(void)
 {
 	Runeerror = -1;
 
-	plan(56);
+	plan(46);
 
 	CHECK("\x80", 1, 0, "lone smallest continuation byte");
 	CHECK("\xBF", 1, 0, "lone largest continuation byte");
@@ -46,20 +46,13 @@ main(void)
 	CHECK("\xF8 \xF9 \xFA \xFB ", 8, 1, "all 4 5-leading bytes spaced");
 	CHECK("\xFC \xFD ", 4, 1, "all 2 6-leading bytes spaced");
 
-	CHECK("\xC0", 1, 0, "2-byte sequence U+0000 with last byte missing");
-	CHECK("\xE0\x80", 1, 0, "3-byte sequence U+0000 with last byte missing");
-	CHECK("\xF0\x80\x80", 1, 0, "4-byte sequence U+0000 with last byte missing");
-	CHECK("\xF8\x80\x80\x80", 1, 0, "5-byte sequence U+0000 with last byte missing");
-	CHECK("\xFC\x80\x80\x80\x80", 1, 0, "6-byte sequence U+0000 with last byte missing");
-
 	CHECK("\xDF", 1, 0, "2-byte sequence U+000007FF with last byte missing");
 	CHECK("\xEF\xBF", 1, 0, "3-byte sequence U+0000FFFF with last byte missing");
 	CHECK("\xF7\xBF\xBF", 1, 0, "4-byte sequence U+001FFFFF with last byte missing");
 	CHECK("\xFB\xBF\xBF\xBF", 1, 0, "5-byte sequence U+03FFFFFF with last byte missing");
 	CHECK("\xFD\xBF\xBF\xBF\xBF", 1, 0, "6-byte sequence U+7FFFFFFF with last byte missing");
 
-	CHECK("\xC0\xE0\x80\xF0\x80\x80\xF8\x80\x80\x80\xFC\x80\x80\x80\x80"
-	      "\xDF\xEF\xBF\xF7\xBF\xBF\xFB\xBF\xBF\xBF\xFD\xBF\xBF\xBF\xBF", 10, 0, "10 incomplete sequences");
+	CHECK("\xDF\xEF\xBF\xF7\xBF\xBF\xFB\xBF\xBF\xBF\xFD\xBF\xBF\xBF\xBF", 5, 0, "5 incomplete sequences");
 
 	CHECK("\xFE", 1, 0, "impossible sequence \"\\xFE\"");
 	CHECK("\xFF", 1, 0, "impossible sequence \"\\xFF\"");
