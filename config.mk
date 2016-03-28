@@ -4,7 +4,7 @@ PREFIX = /usr/local
 
 UNICODE = 8.0.0
 
-CFLAGS  = -ansi -pedantic -Iinclude -Os -Wall -Wextra
+CFLAGS  = -ansi -pedantic -Iinclude -Os -Wall
 LDFLAGS = -s
 
 CC  = cc

@@ -21,8 +21,6 @@
 int
 main(void)
 {
-	Runeerror = -1;
-
 	plan(46);
 
 	CHECK("\x80", 1, 0, "lone smallest continuation byte");

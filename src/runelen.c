@@ -6,6 +6,9 @@ runelen(Rune r)
 {
 	int i;
 
+	if(r < 0)
+		return 0;
+
 	if(r < Runeself)
 		return 1;
 

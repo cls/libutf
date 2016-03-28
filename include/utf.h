@@ -5,28 +5,18 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#ifdef UINT32_C
-#define RUNE_C(x) UINT32_C(x)
-#if __cplusplus >= 201103L
-typedef char32_t Rune;
-#else
-typedef uint_least32_t Rune;
-#endif
-#else
-#define RUNE_C(x) x##UL
-typedef unsigned long Rune;
-#endif
+#define RUNE_C(x) INT32_C(x)
+typedef int32_t Rune;
 
 #define UTFmax 6 /* maximum bytes per rune */
 
-#define Runeself 0x80               /* rune and utf are equal (<) */
-#define Runemax  RUNE_C(0x7FFFFFFF) /* maximum rune value */
+#define Runeself  0x80               /* rune and utf are equal (<) */
+#define Runemax   RUNE_C(0x7FFFFFFF) /* maximum rune value */
+#define Runeerror ((Rune)-1)         /* decoding error in utf */
 
 #define runestrcat(s1, s2) runestrncat(s1, s2, SIZE_MAX)
 #define runestrcmp(s1, s2) runestrncmp(s1, s2, SIZE_MAX)
 #define runestrcpy(s1, s2) runestrncpy(s1, s2, SIZE_MAX)
-
-extern Rune Runeerror; /* decoding error in utf */
 
 #ifdef __cplusplus
 extern "C" {

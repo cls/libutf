@@ -15,7 +15,7 @@ runetochar(char *s, const Rune *p)
 		return 1;
 	}
 
-	if(n > UTFmax)
+	if(n == 0)
 		return 0;
 
 	for(i = n; --i > 0; r >>= 6)

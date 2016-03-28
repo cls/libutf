@@ -15,8 +15,6 @@
 int
 main(void)
 {
-	Runeerror = -1;
-
 	plan(50);
 
 	{

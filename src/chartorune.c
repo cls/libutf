@@ -1,8 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 #include "utf.h"
 
-Rune Runeerror = 0xFFFD;
-
 /* lookup table for the number of bytes expected in a sequence */
 static const char lookup[128] = {
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 000xxxxx */
@@ -18,7 +16,7 @@ static const char lookup[128] = {
 int
 charntorune(Rune *p, const char *s, size_t len)
 {
-	unsigned int i, n, x;
+	int i, n, x;
 	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */

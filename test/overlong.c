@@ -21,8 +21,6 @@
 int
 main(void)
 {
-	Runeerror = -1;
-
 	plan(30);
 
 	CHECK("\xC0\xAF", 2, "2-byte overlong U+002F SLASH");
