@@ -4,18 +4,20 @@
 int
 runelen(Rune r)
 {
-	int i;
-
 	if(r < 0)
 		return 0;
-
-	if(r < Runeself)
+	else if(r < RUNE_C(1) << 7)
 		return 1;
-
-	for(i = 2; r > 03777; i++) /* too big to fit in this many (i) utf bytes */
-		r >>= 5; /* gain 6 bits from continuation byte but lose 1 in leader */
-
-	return i;
+	else if(r < RUNE_C(1) << 11)
+		return 2;
+	else if(r < RUNE_C(1) << 16)
+		return 3;
+	else if(r < RUNE_C(1) << 21)
+		return 4;
+	else if(r < RUNE_C(1) << 26)
+		return 5;
+	else
+		return 6;
 }
 
 size_t
