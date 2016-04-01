@@ -22,12 +22,12 @@ typedef int32_t Rune;
 extern "C" {
 #endif
 
-int runetochar(char *, const Rune *);
 int charntorune(Rune *, const char *, size_t);
 int chartorune(Rune *, const char *);
 int fullrune(const char *, size_t);
 int runelen(const Rune);
 size_t runenlen(const Rune *, size_t);
+int runetochar(char *, const Rune *);
 size_t utflen(const char *);
 size_t utfnlen(const char *, size_t);
 char *utfrune(const char *, Rune);

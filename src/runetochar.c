@@ -4,8 +4,7 @@
 int
 runetochar(char *s, const Rune *p)
 {
-	int i, n;
-	unsigned char x;
+	unsigned char i, n, x;
 	Rune r = *p;
 
 	n = runelen(r);
@@ -19,9 +18,9 @@ runetochar(char *s, const Rune *p)
 		return 0;
 
 	for(i = n; --i > 0; r >>= 6)
-		s[i] = 0x80 | (r & 0x3F);
+		s[i] = 0200 | (r & 077);
 
-	x = 0xFF >> n;
+	x = 0377 >> n;
 	s[0] = ~x | r;
 
 	return n;

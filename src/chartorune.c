@@ -2,72 +2,85 @@
 #include "utf.h"
 
 /* lookup table for the number of bytes expected in a sequence */
-static const char lookup[128] = {
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 000xxxxx */
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 001xxxxx */
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 010xxxxx */
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 011xxxxx */
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 100xxxxx */
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 101xxxxx */
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* 110xxxxx */
-	3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 0, /* 111xxxxx */
+static const unsigned char lookup[] = {
+	0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* 1100xxxx */
+	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* 1101xxxx */
+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, /* 1110xxxx */
+	4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 0, 0, /* 1111xxxx */
 };
 
 int
 charntorune(Rune *p, const char *s, size_t len)
 {
-	int i, n, x;
+	unsigned char c, i, n, x;
 	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */
 		return 0;
 
-	r = (unsigned char)s[0];
-	n = lookup[r/2];
-	i = 1;
+	c = s[0];
 
-	if(n == 1)
-		goto done;
+	if(!(c & 0200)) { /* basic byte */
+		*p = c;
+		return 1;
+	}
 
-	if(n == 0)
-		goto fail;
+	if(!(c & 0100)) { /* continuation byte */
+		*p = Runeerror;
+		return 1;
+	}
+
+	n = lookup[c & 077];
+
+	if(n == 0) { /* illegal byte */
+		*p = Runeerror;
+		return 1;
+	}
 
 	if(len == 1) /* reached len limit */
 		return 0;
 
-	if((s[1] & 0xC0) != 0x80) /* not a continuation byte */
-		goto fail;
+	x = 0377 >> n;
+	r = c & x;
 
-	x = 0xFF >> n;
-	r = ((r & x) << 6) | (s[1] & 0x3F); /* 10xxxxxx */
-	i = 2;
+	c = s[1];
 
-	if(n == 2)
-		goto done;
+	if((c & 0300) != 0200) { /* not a continuation byte */
+		*p = Runeerror;
+		return 1;
+	}
 
-	if(r <= x) /* overlong sequence */
-		goto fail;
+	r = (r << 6) | (c & 077);
+
+	if(n == 2) {
+		*p = r;
+		return 2;
+	}
+
+	if(r <= x) { /* overlong sequence */
+		*p = Runeerror;
+		return 2;
+	}
 
 	if(len > n)
 		len = n;
 
 	/* add values from continuation bytes */
-	for(; i < len; i++) {
-		if((s[i] & 0xC0) != 0x80) /* not a continuation byte */
-			goto fail;
+	for(i = 2; i < len; i++) {
+		c = s[i];
 
-		r = (r << 6) | (s[i] & 0x3F); /* 10xxxxxx */
+		if((c & 0300) != 0200) { /* not a continuation byte */
+			*p = Runeerror;
+			return i;
+		}
+
+		r = (r << 6) | (c & 077);
 	}
 
 	if(i < n) /* must have reached len limit */
 		return 0;
 
-done:
 	*p = r;
-	return i;
-
-fail:
-	*p = Runeerror;
 	return i;
 }
 
@@ -80,14 +93,18 @@ chartorune(Rune *p, const char *s)
 int
 fullrune(const char *s, size_t len)
 {
-	unsigned int i, n, x;
+	unsigned char c, i, n, x;
 	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */
 		return 0;
 
-	r = (unsigned char)s[0];
-	n = lookup[r/2];
+	c = s[0];
+
+	if ((c & 0300) != 0300) /* basic or continuation byte */
+		return 1;
+
+	n = lookup[c & 077];
 
 	if(len >= n) /* must be long enough */
 		return 1;
@@ -97,18 +114,25 @@ fullrune(const char *s, size_t len)
 
 	/* check if an error means this rune is full */
 
-	if((s[1] & 0xC0) != 0x80) /* not a continuation byte */
+	x = 0377 >> n;
+	r = c & x;
+
+	c = s[1];
+
+	if((c & 0300) != 0200) /* not a continuation byte */
 		return 1;
 
-	x = 0xFF >> n;
-	r = ((r & x) << 6) | (s[1] & 0x3F); /* 10xxxxxx */
+	r = (r << 6) | (c & 077);
 
 	if(r <= x) /* overlong sequence */
 		return 1;
 
-	for(i = 2; i < len; i++)
-		if((s[i] & 0xC0) != 0x80) /* not a continuation byte */
+	for(i = 2; i < len; i++) {
+		c = s[i];
+
+		if((c & 0300) != 0200) /* not a continuation byte */
 			return 1;
+	}
 
 	return 0;
 }
