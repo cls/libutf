@@ -18,7 +18,7 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(len == 0) /* can't even look at s[0] */
 		return 0;
 
-	c = s[0];
+	c = *s++;
 
 	if(!(c & 0200)) { /* basic byte */
 		*p = c;
@@ -40,22 +40,15 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(len == 1) /* reached len limit */
 		return 0;
 
-	x = 0377 >> n;
-	r = c & x;
-
-	c = s[1];
-
-	if((c & 0300) != 0200) { /* not a continuation byte */
+	if((*s & 0300) != 0200) { /* not a continuation byte */
 		*p = Runeerror;
 		return 1;
 	}
 
-	r = (r << 6) | (c & 077);
+	x = 0377 >> n;
+	r = c & x;
 
-	if(n == 2) {
-		*p = r;
-		return 2;
-	}
+	r = (r << 6) | (*s++ & 077);
 
 	if(r <= x) { /* overlong sequence */
 		*p = Runeerror;
@@ -65,16 +58,12 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(len > n)
 		len = n;
 
-	/* add values from continuation bytes */
 	for(i = 2; i < len; i++) {
-		c = s[i];
-
-		if((c & 0300) != 0200) { /* not a continuation byte */
+		if((*s & 0300) != 0200) { /* not a continuation byte */
 			*p = Runeerror;
 			return i;
 		}
-
-		r = (r << 6) | (c & 077);
+		r = (r << 6) | (*s++ & 077);
 	}
 
 	if(i < n) /* must have reached len limit */
@@ -99,9 +88,9 @@ fullrune(const char *s, size_t len)
 	if(len == 0) /* can't even look at s[0] */
 		return 0;
 
-	c = s[0];
+	c = *s++;
 
-	if ((c & 0300) != 0300) /* basic or continuation byte */
+	if ((c & 0300) != 0300) /* not a leading byte */
 		return 1;
 
 	n = lookup[c & 077];
@@ -114,24 +103,21 @@ fullrune(const char *s, size_t len)
 
 	/* check if an error means this rune is full */
 
+	if((*s & 0300) != 0200) /* not a continuation byte */
+		return 1;
+
 	x = 0377 >> n;
 	r = c & x;
 
-	c = s[1];
-
-	if((c & 0300) != 0200) /* not a continuation byte */
-		return 1;
-
-	r = (r << 6) | (c & 077);
+	r = (r << 6) | (*s++ & 077);
 
 	if(r <= x) /* overlong sequence */
 		return 1;
 
 	for(i = 2; i < len; i++) {
-		c = s[i];
-
-		if((c & 0300) != 0200) /* not a continuation byte */
+		if((*s & 0300) != 0200) /* not a continuation byte */
 			return 1;
+		s++;
 	}
 
 	return 0;
