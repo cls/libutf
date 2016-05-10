@@ -16,13 +16,13 @@ $3 == "Lt" { titles[ntitle++] = $1; }
 $3 == "Nd" { digits[ndigit++] = $1; }
 
 END {
-	mkis("alpha", alphas, nalpha, "src/isalpharune.c");
-	mkis("cntrl", cntrls, ncntrl, "src/iscntrlrune.c");
-	mkis("digit", digits, ndigit, "src/isdigitrune.c");
-	mkis("lower", lowers, nlower, "src/islowerrune.c", touppers, "upper");
-	mkis("space", spaces, nspace, "src/isspacerune.c");
-	mkis("title", titles, ntitle, "src/istitlerune.c");
-	mkis("upper", uppers, nupper, "src/isupperrune.c", tolowers, "lower");
+	mkis("alpha", alphas, nalpha, "runetype/isalpharune.c");
+	mkis("cntrl", cntrls, ncntrl, "runetype/iscntrlrune.c");
+	mkis("digit", digits, ndigit, "runetype/isdigitrune.c");
+	mkis("lower", lowers, nlower, "runetype/islowerrune.c", touppers, "upper");
+	mkis("space", spaces, nspace, "runetype/isspacerune.c");
+	mkis("title", titles, ntitle, "runetype/istitlerune.c");
+	mkis("upper", uppers, nupper, "runetype/isupperrune.c", tolowers, "lower");
 }
 
 # parse hexadecimal rune index to int

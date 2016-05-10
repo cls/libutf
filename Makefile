@@ -3,41 +3,43 @@
 include config.mk
 
 GEN = \
-	src/isalpharune.c \
-	src/iscntrlrune.c \
-	src/isdigitrune.c \
-	src/islowerrune.c \
-	src/isspacerune.c \
-	src/istitlerune.c \
-	src/isupperrune.c \
+	runetype/isalpharune.c \
+	runetype/iscntrlrune.c \
+	runetype/isdigitrune.c \
+	runetype/islowerrune.c \
+	runetype/isspacerune.c \
+	runetype/istitlerune.c \
+	runetype/isupperrune.c \
 
 GENOBJ = $(GEN:.c=.o)
 
-SRC = $(GEN) \
-	src/chartorune.c \
-	src/isalnumrune.c \
-	src/isblankrune.c \
-	src/isgraphrune.c \
-	src/isprintrune.c \
-	src/ispunctrune.c \
-	src/isxdigitrune.c \
-	src/runelen.c \
-	src/runestrcat.c \
-	src/runestrchr.c \
-	src/runestrcmp.c \
-	src/runestrcpy.c \
-	src/runestrdup.c \
-	src/runestrecpy.c \
-	src/runestrlen.c \
-	src/runestrrchr.c \
-	src/runestrstr.c \
-	src/runetochar.c \
-	src/runetype.c \
-	src/utfecpy.c \
-	src/utflen.c \
-	src/utfrrune.c \
-	src/utfrune.c \
-	src/utfutf.c \
+SRC = \
+	utf/chartorune.c \
+	utf/fullrune.c \
+	utf/runelen.c \
+	utf/runetochar.c \
+	utf/utfecpy.c \
+	utf/utflen.c \
+	utf/utfrrune.c \
+	utf/utfrune.c \
+	utf/utfutf.c \
+	runestr/runestrcat.c \
+	runestr/runestrchr.c \
+	runestr/runestrcmp.c \
+	runestr/runestrcpy.c \
+	runestr/runestrdup.c \
+	runestr/runestrecpy.c \
+	runestr/runestrlen.c \
+	runestr/runestrrchr.c \
+	runestr/runestrstr.c \
+	runetype/isalnumrune.c \
+	runetype/isblankrune.c \
+	runetype/isgraphrune.c \
+	runetype/isprintrune.c \
+	runetype/ispunctrune.c \
+	runetype/isxdigitrune.c \
+	runetype/runetype.c \
+	$(GEN)
 
 OBJ = $(SRC:.c=.o)
 
@@ -71,11 +73,11 @@ $(LIB): $(OBJ)
 
 $(OBJ): $(HDR)
 
-$(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt src/runetype.h src/runetypebody.h
+$(GEN): bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt runetype/runetype.h runetype/runetypebody.h
 	@echo AWK -f bin/mkrunetype.awk
 	@$(AWK) -f bin/mkrunetype.awk share/UnicodeData-$(UNICODE).txt
 
-$(GENOBJ) src/runetype.o: src/runetype.h
+$(GENOBJ) runetype/runetype.o: runetype/runetype.h
 
 $(TEST): $(LIB) test/tap.h
 
