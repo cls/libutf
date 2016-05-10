@@ -11,3 +11,9 @@ runestrncpy(Rune *s1, const Rune *s2, size_t n)
 		*s1 = *s2;
 	return s1;
 }
+
+Rune *
+runestrcpy(Rune *s1, const Rune *s2)
+{
+	return runestrncpy(s1, s2, (size_t)-1);
+}

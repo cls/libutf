@@ -16,3 +16,9 @@ runestrncat(Rune *s0, const Rune *s2, size_t n)
 
 	return s0;
 }
+
+Rune *
+runestrcat(Rune *s0, const Rune *s2)
+{
+	return runestrncat(s0, s2, (size_t)-1);
+}

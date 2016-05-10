@@ -14,10 +14,6 @@ typedef int32_t Rune;
 #define Runemax   RUNE_C(0x7FFFFFFF) /* maximum rune value */
 #define Runeerror ((Rune)-1)         /* decoding error in utf */
 
-#define runestrcat(s1, s2) runestrncat(s1, s2, SIZE_MAX)
-#define runestrcmp(s1, s2) runestrncmp(s1, s2, SIZE_MAX)
-#define runestrcpy(s1, s2) runestrncpy(s1, s2, SIZE_MAX)
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -50,8 +46,11 @@ int isxdigitrune(Rune);
 Rune tolowerrune(Rune);
 Rune toupperrune(Rune);
 
+Rune *runestrcat(Rune *, const Rune *);
 Rune *runestrncat(Rune *, const Rune *, size_t);
+int runestrcmp(const Rune *, const Rune *);
 int runestrncmp(const Rune *, const Rune *, size_t);
+Rune *runestrcpy(Rune *, const Rune *);
 Rune *runestrncpy(Rune *, const Rune *, size_t);
 size_t runestrlen(const Rune *);
 Rune *runestrchr(const Rune *, Rune);

@@ -17,3 +17,9 @@ runestrncmp(const Rune *s1, const Rune *s2, size_t n)
 
 	return *s2;
 }
+
+int
+runestrcmp(const Rune *s1, const Rune *s2)
+{
+	return runestrncmp(s1, s2, (size_t)-1);
+}
