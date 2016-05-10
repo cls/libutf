@@ -20,57 +20,45 @@ charntorune(Rune *p, const char *s, size_t len)
 
 	c = *s++;
 
-	if(!(c & 0200)) { /* basic byte */
-		*p = c;
-		return 1;
-	}
+	if(!(c & 0200)) /* basic byte */
+		return (*p = c, 1);
 
-	if(!(c & 0100)) { /* continuation byte */
-		*p = Runeerror;
-		return 1;
-	}
+	if(!(c & 0100)) /* continuation byte */
+		return (*p = Runeerror, 1);
 
 	n = utftab[c & 077];
 
-	if(n == 0) { /* illegal byte */
-		*p = Runeerror;
-		return 1;
-	}
+	if(n == 0) /* illegal byte */
+		return (*p = Runeerror, 1);
 
 	if(len == 1) /* reached len limit */
 		return 0;
 
-	if((*s & 0300) != 0200) { /* not a continuation byte */
-		*p = Runeerror;
-		return 1;
-	}
+	if((*s & 0300) != 0200) /* not a continuation byte */
+		return (*p = Runeerror, 1);
 
 	x = 0377 >> n;
 	r = c & x;
 
 	r = (r << 6) | (*s++ & 077);
 
-	if(r <= x) { /* overlong sequence */
-		*p = Runeerror;
-		return 2;
-	}
+	if(r <= x) /* overlong sequence */
+		return (*p = Runeerror, 2);
 
 	if(len > n)
 		len = n;
 
 	for(i = 2; i < len; i++) {
-		if((*s & 0300) != 0200) { /* not a continuation byte */
-			*p = Runeerror;
-			return i;
-		}
+		if((*s & 0300) != 0200) /* not a continuation byte */
+			return (*p = Runeerror, i);
+
 		r = (r << 6) | (*s++ & 077);
 	}
 
 	if(i < n) /* must have reached len limit */
 		return 0;
 
-	*p = r;
-	return i;
+	return (*p = r, i);
 }
 
 int
