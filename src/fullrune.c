@@ -12,7 +12,7 @@ fullrune(const char *s, size_t len)
 
 	c = *s++;
 
-	if ((c & 0300) != 0300) /* not a leading byte */
+	if((c & 0300) != 0300) /* not a leading byte */
 		return 1;
 
 	n = utftab[c & 077];
@@ -39,6 +39,7 @@ fullrune(const char *s, size_t len)
 	for(i = 2; i < len; i++) {
 		if((*s & 0300) != 0200) /* not a continuation byte */
 			return 1;
+
 		s++;
 	}
 
