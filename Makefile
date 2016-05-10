@@ -35,7 +35,6 @@ SRC = $(GEN) \
 	src/runetype.c \
 	src/utfecpy.c \
 	src/utflen.c \
-	src/utfnlen.c \
 	src/utfrrune.c \
 	src/utfrune.c \
 	src/utfutf.c \

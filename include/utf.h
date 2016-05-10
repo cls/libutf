@@ -58,6 +58,8 @@ Rune *runestrrchr(const Rune *, Rune);
 Rune *runestrdup(const Rune *);
 Rune *runestrstr(const Rune *, const Rune *);
 
+extern const unsigned char utftab[64];
+
 #ifdef __cplusplus
 }
 #endif
