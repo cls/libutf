@@ -4,7 +4,7 @@
 int
 fullrune(const char *s, size_t len)
 {
-	unsigned char c, i, n, x;
+	unsigned char c, i, m, n, x;
 	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */
@@ -36,7 +36,9 @@ fullrune(const char *s, size_t len)
 	if(r <= x) /* overlong sequence */
 		return 1;
 
-	for(i = 2; i < len; i++) {
+	m = len; /* we already know that len < n */
+
+	for(i = 2; i < m; i++) {
 		if((*s & 0300) != 0200) /* not a continuation byte */
 			return 1;
 

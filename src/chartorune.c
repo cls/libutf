@@ -12,7 +12,7 @@ const unsigned char utftab[64] = {
 int
 charntorune(Rune *p, const char *s, size_t len)
 {
-	unsigned char c, i, n, x;
+	unsigned char c, i, m, n, x;
 	Rune r;
 
 	if(len == 0) /* can't even look at s[0] */
@@ -45,10 +45,9 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(r <= x) /* overlong sequence */
 		return (*p = Runeerror, 2);
 
-	if(len > n)
-		len = n;
+	m = (len < n) ? len : n;
 
-	for(i = 2; i < len; i++) {
+	for(i = 2; i < m; i++) {
 		if((*s & 0300) != 0200) /* not a continuation byte */
 			return (*p = Runeerror, i);
 
