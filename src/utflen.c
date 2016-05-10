@@ -11,7 +11,7 @@ utfnlen(const char *s, size_t len)
 
 	for(k = 0; *s != '\0'; len -= s - p, p = s, k++) {
 		if(len == 0) /* can't even look at s[0] */
-			break;
+			return k;
 
 		c = *s++;
 
@@ -22,6 +22,9 @@ utfnlen(const char *s, size_t len)
 
 		if(n == 0) /* illegal byte */
 			continue;
+
+		if(len == 1) /* reached len limit */
+			return k;
 
 		if((*s & 0300) != 0200) /* not a continuation byte */
 			continue;
@@ -34,11 +37,18 @@ utfnlen(const char *s, size_t len)
 		if(r <= x) /* overlong sequence */
 			continue;
 
-		for(i = 2; i < n; i++) {
+		if(len > n)
+			len = n;
+
+		for(i = 2; i < len; i++) {
 			if((*s & 0300) != 0200) /* not a continuation byte */
-				break;
+				return k;
+
 			s++;
 		}
+
+		if(i < n) /* must have reached len limit */
+			return k;
 	}
 
 	return k;
