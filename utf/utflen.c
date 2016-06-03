@@ -9,7 +9,7 @@ utfnlen(const char *s, size_t len)
 	size_t k;
 	Rune r;
 
-	for(k = 0; *s != '\0'; len -= s - p, p = s, k++) {
+	for(k = 0; *(p = s) != '\0'; len -= s - p, k++) {
 		if(len == 0) /* can't even look at s[0] */
 			return k;
 
