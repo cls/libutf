@@ -37,6 +37,7 @@ SRC = \
 	runetype/isgraphrune.c \
 	runetype/isprintrune.c \
 	runetype/ispunctrune.c \
+	runetype/isvalidrune.c \
 	runetype/isxdigitrune.c \
 	runetype/runetype.c \
 	$(GEN)

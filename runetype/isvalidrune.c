@@ -1,3 +1,5 @@
+#include "utf.h"
+
 int
 isvalidrune(Rune r)
 {
