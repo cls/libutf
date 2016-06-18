@@ -4,7 +4,7 @@
 int
 runelen(Rune r)
 {
-	if(r < 0)
+	if(!isvalidrune(r))
 		return 0;
 	else if(r < RUNE_C(1) << 7)
 		return 1;

@@ -57,6 +57,9 @@ charntorune(Rune *p, const char *s, size_t len)
 	if(i < n) /* must have reached len limit */
 		return 0;
 
+	if(!isvalidrune(r))
+		return (*p = Runeerror, i);
+
 	return (*p = r, i);
 }
 
