@@ -19,10 +19,10 @@ END {
 	mkis("alpha", alphas, nalpha, "runetype/isalpharune.c");
 	mkis("cntrl", cntrls, ncntrl, "runetype/iscntrlrune.c");
 	mkis("digit", digits, ndigit, "runetype/isdigitrune.c");
-	mkis("lower", lowers, nlower, "runetype/islowerrune.c", touppers, "upper");
+	mkis("lower", lowers, nlower, "runetype/islowerrune.c", touppers, nlowercase, "upper");
 	mkis("space", spaces, nspace, "runetype/isspacerune.c");
 	mkis("title", titles, ntitle, "runetype/istitlerune.c");
-	mkis("upper", uppers, nupper, "runetype/isupperrune.c", tolowers, "lower");
+	mkis("upper", uppers, nupper, "runetype/isupperrune.c", tolowers, nuppercase, "lower");
 }
 
 # parse hexadecimal rune index to int
@@ -36,8 +36,7 @@ function code(s) {
 }
 
 # generate 'is<name>rune' unicode lookup function
-function mkis(name, runes, nrune, file, cases, casename) {
-	ncase = length(cases)
+function mkis(name, runes, nrune, file, cases, ncase, casename) {
 	nsingle = 0;
 	nrange = 0;
 	nlace1 = 0;
