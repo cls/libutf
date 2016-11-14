@@ -1,4 +1,4 @@
-MIT/X Consortium License
+MIT License
 
 © 2012-2016 Connor Lane Smith <cls@lubutu.com>
 © 2015 Laslo Hunhold <dev@frign.de>
@@ -23,13 +23,13 @@ DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------
 
-The 'UnicodeData-8.0.0.txt' file is from the Unicode Character Database.
-It is available at http://www.unicode.org/Public/zipped/8.0.0/UCD.zip and
+The 'UnicodeData-9.0.0.txt' file is from the Unicode Character Database.
+It is available at http://www.unicode.org/Public/zipped/9.0.0/UCD.zip and
 is made available under the following license by Unicode, Inc:
 
 COPYRIGHT AND PERMISSION NOTICE
 
-Copyright © 1991-2015 Unicode, Inc. All rights reserved.
+Copyright © 1991-2016 Unicode, Inc. All rights reserved.
 Distributed under the Terms of Use in
 http://www.unicode.org/copyright.html.
 
