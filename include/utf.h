@@ -29,6 +29,7 @@ size_t utfnlen(const char *, size_t);
 char *utfrune(const char *, Rune);
 char *utfrrune(const char *, Rune);
 char *utfutf(const char *, const char *);
+char *utfecpy(char *, char *, const char *);
 
 int isalnumrune(Rune);
 int isalpharune(Rune);
@@ -58,6 +59,7 @@ Rune *runestrchr(const Rune *, Rune);
 Rune *runestrrchr(const Rune *, Rune);
 Rune *runestrdup(const Rune *);
 Rune *runestrstr(const Rune *, const Rune *);
+Rune *runestrecpy(Rune *, Rune *, Rune *);
 
 extern const unsigned char utftab[64];
 
